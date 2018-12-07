@@ -49,10 +49,10 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		ShareAddUserToShareHandler: share.AddUserToShareHandlerFunc(func(params share.AddUserToShareParams) middleware.Responder {
 			return middleware.NotImplemented("operation ShareAddUserToShare has not yet been implemented")
 		}),
-		BasketCreateBasketHandler: basket.CreateBasketHandlerFunc(func(params basket.CreateBasketParams) middleware.Responder {
+		BasketCreateBasketHandler: basket.CreateBasketHandlerFunc(func(params basket.CreateBasketParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation BasketCreateBasket has not yet been implemented")
 		}),
-		BasketGetAllBasketsHandler: basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams) middleware.Responder {
+		BasketGetAllBasketsHandler: basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation BasketGetAllBaskets has not yet been implemented")
 		}),
 		GoodsGetAllGoodsInBasketHandler: goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
@@ -61,11 +61,11 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		ShareGetAllSharesForBasketHandler: share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
 			return middleware.NotImplemented("operation ShareGetAllSharesForBasket has not yet been implemented")
 		}),
+		UserGetCurrentUserHandler: user.GetCurrentUserHandlerFunc(func(params user.GetCurrentUserParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation UserGetCurrentUser has not yet been implemented")
+		}),
 		ProductGetProductsByParamsHandler: product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProductGetProductsByParams has not yet been implemented")
-		}),
-		UserGetUserByNameHandler: user.GetUserByNameHandlerFunc(func(params user.GetUserByNameParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation UserGetUserByName has not yet been implemented")
 		}),
 		UserLoginUserHandler: user.LoginUserHandlerFunc(func(params user.LoginUserParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserLoginUser has not yet been implemented")
@@ -132,10 +132,10 @@ type CityProjectForAuchanAPI struct {
 	GoodsGetAllGoodsInBasketHandler goods.GetAllGoodsInBasketHandler
 	// ShareGetAllSharesForBasketHandler sets the operation handler for the get all shares for basket operation
 	ShareGetAllSharesForBasketHandler share.GetAllSharesForBasketHandler
+	// UserGetCurrentUserHandler sets the operation handler for the get current user operation
+	UserGetCurrentUserHandler user.GetCurrentUserHandler
 	// ProductGetProductsByParamsHandler sets the operation handler for the get products by params operation
 	ProductGetProductsByParamsHandler product.GetProductsByParamsHandler
-	// UserGetUserByNameHandler sets the operation handler for the get user by name operation
-	UserGetUserByNameHandler user.GetUserByNameHandler
 	// UserLoginUserHandler sets the operation handler for the login user operation
 	UserLoginUserHandler user.LoginUserHandler
 	// UserLogoutUserHandler sets the operation handler for the logout user operation
@@ -231,12 +231,12 @@ func (o *CityProjectForAuchanAPI) Validate() error {
 		unregistered = append(unregistered, "share.GetAllSharesForBasketHandler")
 	}
 
-	if o.ProductGetProductsByParamsHandler == nil {
-		unregistered = append(unregistered, "product.GetProductsByParamsHandler")
+	if o.UserGetCurrentUserHandler == nil {
+		unregistered = append(unregistered, "user.GetCurrentUserHandler")
 	}
 
-	if o.UserGetUserByNameHandler == nil {
-		unregistered = append(unregistered, "user.GetUserByNameHandler")
+	if o.ProductGetProductsByParamsHandler == nil {
+		unregistered = append(unregistered, "product.GetProductsByParamsHandler")
 	}
 
 	if o.UserLoginUserHandler == nil {
@@ -388,12 +388,12 @@ func (o *CityProjectForAuchanAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/product"] = product.NewGetProductsByParams(o.context, o.ProductGetProductsByParamsHandler)
+	o.handlers["GET"]["/user"] = user.NewGetCurrentUser(o.context, o.UserGetCurrentUserHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/user/{email}"] = user.NewGetUserByName(o.context, o.UserGetUserByNameHandler)
+	o.handlers["GET"]["/product"] = product.NewGetProductsByParams(o.context, o.ProductGetProductsByParamsHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

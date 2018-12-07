@@ -18,6 +18,12 @@ var (
 
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "schemes": [
     "http"
   ],
@@ -32,6 +38,11 @@ func init() {
   "paths": {
     "/basket": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "basket"
         ],
@@ -50,6 +61,11 @@ func init() {
         }
       },
       "put": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "basket"
         ],
@@ -251,11 +267,30 @@ func init() {
         }
       }
     },
+    "/user": {
+      "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "tags": [
+          "user"
+        ],
+        "summary": "Returns current user",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
     "/user/login": {
       "get": {
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "user"
         ],
@@ -295,9 +330,6 @@ func init() {
     },
     "/user/logout": {
       "get": {
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "user"
         ],
@@ -309,46 +341,6 @@ func init() {
           }
         }
       }
-    },
-    "/user/{email}": {
-      "get": {
-        "security": [
-          {
-            "AuthToken": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ],
-        "summary": "Get user by email",
-        "operationId": "getUserByName",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "The name that needs to be fetched.",
-            "name": "email",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -356,7 +348,8 @@ func init() {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "name": {
           "type": "string"
@@ -458,6 +451,12 @@ func init() {
   ]
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "schemes": [
     "http"
   ],
@@ -472,6 +471,11 @@ func init() {
   "paths": {
     "/basket": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "basket"
         ],
@@ -490,6 +494,11 @@ func init() {
         }
       },
       "put": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "basket"
         ],
@@ -691,11 +700,30 @@ func init() {
         }
       }
     },
+    "/user": {
+      "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
+        "tags": [
+          "user"
+        ],
+        "summary": "Returns current user",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
     "/user/login": {
       "get": {
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "user"
         ],
@@ -735,9 +763,6 @@ func init() {
     },
     "/user/logout": {
       "get": {
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "user"
         ],
@@ -749,46 +774,6 @@ func init() {
           }
         }
       }
-    },
-    "/user/{email}": {
-      "get": {
-        "security": [
-          {
-            "AuthToken": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ],
-        "summary": "Get user by email",
-        "operationId": "getUserByName",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "The name that needs to be fetched.",
-            "name": "email",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -796,7 +781,8 @@ func init() {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "name": {
           "type": "string"

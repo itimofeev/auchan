@@ -16,7 +16,7 @@ import (
 type Basket struct {
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID int64 `json:"id,omitempty"`
 
 	// name
 	Name string `json:"name,omitempty"`

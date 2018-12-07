@@ -52,10 +52,8 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	api.ShareAddUserToShareHandler = share.AddUserToShareHandlerFunc(func(params share.AddUserToShareParams) middleware.Responder {
 		return middleware.NotImplemented("operation share.AddUserToShare has not yet been implemented")
 	})
-	api.BasketCreateBasketHandler = basket.CreateBasketHandlerFunc(func(params basket.CreateBasketParams) middleware.Responder {
-		return middleware.NotImplemented("operation basket.CreateBasket has not yet been implemented")
-	})
-	api.BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams) middleware.Responder {
+	api.BasketCreateBasketHandler = BasketCreateBasketHandler
+	api.BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams, principal interface{}) middleware.Responder {
 		return middleware.NotImplemented("operation basket.GetAllBaskets has not yet been implemented")
 	})
 	api.GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
@@ -67,7 +65,7 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	api.ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
 		return middleware.NotImplemented("operation product.GetProductsByParams has not yet been implemented")
 	})
-	api.UserGetUserByNameHandler = UserGetUserByNameHandler
+	api.UserGetCurrentUserHandler = UserGetCurrentUserHandler
 	api.UserLoginUserHandler = UserLoginUserHandler
 	api.UserLogoutUserHandler = user.LogoutUserHandlerFunc(func(params user.LogoutUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation user.LogoutUser has not yet been implemented")

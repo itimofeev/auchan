@@ -1,4 +1,12 @@
-swagger: '2.0'
+---
+consumes:
+- "application/json"
+produces:
+- "application/json"
+schemes:
+- "http"
+swagger: "2.0"
+
 info:
   description: |
     This is a server for collaborative shopping.
@@ -7,39 +15,35 @@ info:
 host: aeuchan.swagger.io
 basePath: /v1
 tags:
-  - name: user
-    description: Operations about user
-  - name: basket
-    description: Operations about basket of goods
-  - name: product
-    description: Operations about products
-  - name: goods
-    description: Operations about goods (product added to the basket with price and quantity)
-  - name: share
-    description: Operations about share of basket with somebody
-schemes:
-  - http
+- name: user
+  description: Operations about user
+- name: basket
+  description: Operations about basket of goods
+- name: product
+  description: Operations about products
+- name: goods
+  description: Operations about goods (product added to the basket with price and quantity)
+- name: share
+  description: Operations about share of basket with somebody
 
 paths:
   /user/login:
     get:
       tags:
-        - user
+      - user
       summary: Logs user into the system
       operationId: loginUser
-      produces:
-        - application/json
       parameters:
-        - name: email
-          in: query
-          description: The user email for login
-          required: true
-          type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: true
-          type: string
+      - name: email
+        in: query
+        description: The user email for login
+        required: true
+        type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: true
+        type: string
       responses:
         200:
           description: OK
@@ -52,78 +56,66 @@ paths:
   /user/logout:
     get:
       tags:
-        - user
+      - user
       summary: Logs out current logged in user session
       operationId: logoutUser
-      produces:
-        - application/json
       parameters: []
       responses:
         default:
           description: successful operation
-  /user/{email}:
+  /user:
     get:
       tags:
-        - user
+      - user
       security:
         - AuthToken: []
-      summary: Get user by email
-      operationId: getUserByName
-      produces:
-        - application/json
-      parameters:
-        - name: email
-          in: path
-          description: The name that needs to be fetched.
-          required: true
-          type: string
+      summary: Returns current user
+      operationId: getCurrentUser
       responses:
         200:
           description: successful operation
           schema:
             $ref: '#/definitions/User'
-        400:
-          description: Invalid username supplied
-        404:
-          description: User not found
 
   /product:
     get:
-      tags:
-        - product
+      tags: 
+      - product
       summary: search for products
       operationId: getProductsByParams
       parameters:
-        - name: name
-          in: query
-          description: The name that needs to be fetched.
-          type: string
+      - name: name
+        in: query
+        description: The name that needs to be fetched.
+        type: string
       responses:
         200:
           description: successful operation
           schema:
             type: array
-            items:
+            items: 
               $ref: '#/definitions/Product'
         404:
           description: Not found
-
+          
   /basket:
     put:
       tags:
-        - basket
+      - basket
       summary: create basket
+      security:
+        - AuthToken: []
       operationId: createBasket
       parameters:
-        - name: "basket"
-          in: "body"
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
+      - name: "basket"
+        in: "body"
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            name: 
+              type: string
       responses:
         200:
           description: successful operation
@@ -133,7 +125,9 @@ paths:
           description: Not found
     get:
       tags:
-        - basket
+      - basket
+      security:
+        - AuthToken: []
       summary: get all users baskets
       operationId: getAllBaskets
       responses:
@@ -143,43 +137,43 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Basket'
-
+  
   /basket/{basketId}/share:
     put:
       tags:
-        - share
+      - share
       summary: add user to share
       operationId: addUserToShare
       parameters:
-        - name: "basketId"
-          type: "string"
-          in: "path"
-          required: true
-        - name: "share"
-          in: "body"
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
+      - name: "basketId"
+        type: "string"
+        in: "path"
+        required: true
+      - name: "share"
+        in: "body"
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            name: 
+              type: string
       responses:
         200:
           description: returns created share
           schema:
             $ref: '#/definitions/Share'
-
+             
     get:
       tags:
-        - share
+      - share
       summary: get all shares for basket
       operationId: getAllSharesForBasket
       parameters:
-        - name: "basketId"
-          type: "string"
-          in: "path"
-          required: true
+      - name: "basketId"
+        type: "string"
+        in: "path"
+        required: true
       responses:
         200:
           description: returns created share
@@ -187,29 +181,29 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Share'
-
+             
   /basket/{basketId}/goods:
     post:
       summary: change goods quantity in basket
       operationId: addGoodsToBasket
-      tags:
-        - goods
+      tags: 
+      - goods      
       parameters:
-        - name: "basketId"
-          type: "string"
-          in: "path"
-          required: true
-        - name: "goods"
-          in: "body"
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              productId:
-                type: string
-              quantity:
-                type: integer
+      - name: "basketId"
+        type: "string"
+        in: "path"
+        required: true
+      - name: "goods"
+        in: "body"
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            productId: 
+              type: string
+            quantity:
+              type: integer
       responses:
         200:
           description: returns current state of goods
@@ -219,13 +213,13 @@ paths:
     get:
       summary: return all goods in basket
       operationId: getAllGoodsInBasket
-      tags:
-        - goods
+      tags: 
+      - goods
       parameters:
-        - name: "basketId"
-          type: "string"
-          in: "path"
-          required: true
+      - name: "basketId"
+        type: "string"
+        in: "path"
+        required: true
       responses:
         200:
           description: returns goods in basket
@@ -233,15 +227,15 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Goods'
-
+                        
 securityDefinitions:
   AuthToken:
     type: apiKey
     in: header
     name: X-Auth-Token
-
+    
 definitions:
-
+  
   User:
     type: object
     properties:
@@ -250,9 +244,9 @@ definitions:
         format: int64
       email:
         type: string
+      
 
-
-
+        
   Product:
     type: object
     properties:
@@ -261,18 +255,19 @@ definitions:
       name:
         type: string
       imageUrl:
-        type: string
+        type: string  
       category:
         type: string
-
+        
   Basket:
     type: object
     properties:
       id:
-        type: string
+        type: integer
+        format: int64
       name:
         type: string
-
+  
   Share:
     type: object
     properties:
@@ -280,7 +275,7 @@ definitions:
         type: string
       userId:
         type: string
-
+        
   Goods:
     type: object
     properties:

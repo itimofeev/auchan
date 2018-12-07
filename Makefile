@@ -6,7 +6,7 @@ SWAGGER_IMAGE=quay.io/goswagger/swagger:v0.17.2
 deploy-db:
 	docker stack deploy --compose-file tools/docker-stack.yml db
 
-gen-server:
+gen-server: download
 	docker run --rm -v $(GOPATH):/go/ -w /go/src/github.com/itimofeev/auchan -t $(SWAGGER_IMAGE) \
 		generate server \
 		--target=server \
@@ -21,9 +21,8 @@ gen-client:
 
 download:
 	wget -O tools/swagger.yml\
-    		--header="Content-type: application/yaml" \
-    		--header="Authorization: eyJUb2tlblR5cGUiOiJBUEkiLCJzYWx0IjoiMDY2NjM4MTQtODExMS00YTZkLWJmODEtMmFmOGFjNmU5ZDBiIiwiYWxnIjoiSFM1MTIifQ.eyJqdGkiOiIuZ2l0aHViLjE0Mzk4NCIsImlhdCI6MTUzMzU3MjY5NX0.x0DsS4uPuzA1eYxYOSdlGOzLXfdGyIPNXrRm8KYG1Xe82h2J48y_0AE0v1tsUZiyvwU6cZS3BBikjkiYbtJdtw" \
-    		https://api.swaggerhub.com/apis/itimofeev/cityproject.auchan
+    		--header="Accept: application/yaml" \
+    		https://api.swaggerhub.com/apis/itimofeev/cityproject.auchan/1.0.0
 
 rm:
 	docker service rm $(shell docker service ls -q) || true

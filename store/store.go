@@ -21,9 +21,14 @@ func NewStore(connectURL string) *Store {
 		util.Log.Printf("%s %s", time.Since(event.StartTime), query)
 	})
 
-	return &Store{
+	store := &Store{
 		db: db,
 	}
+
+	store.CreateUser("user1@gmail.com", "123")
+	store.CreateUser("user2@gmail.com", "123")
+
+	return store
 }
 
 type Store struct {
@@ -31,12 +36,21 @@ type Store struct {
 }
 
 func createSchema(db *pg.DB) error {
-	err := db.CreateTable((*User)(nil), &orm.CreateTableOptions{
-		IfNotExists: true,
-	})
-	if err != nil {
-		return err
+	orm.RegisterTable((*Share)(nil))
+
+	for _, mdl := range []interface{}{
+		(*User)(nil),
+		(*Basket)(nil),
+		(*Share)(nil),
+	} {
+		err := db.CreateTable(mdl, &orm.CreateTableOptions{
+			IfNotExists: true,
+		})
+		if err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 
@@ -60,4 +74,22 @@ func (s *Store) GetUserByID(id int64) (*User, error) {
 	user := &User{ID: id}
 	err := s.db.Select(user)
 	return user, err
+}
+
+func (s *Store) CreateBasket(user *User, basketName string) (*Basket, error) {
+	basket := &Basket{
+		Name:  basketName,
+		Users: []*User{user},
+	}
+
+	return basket, s.db.RunInTransaction(func(tx *pg.Tx) error {
+		if err := tx.Insert(basket); err != nil {
+			return err
+		}
+
+		return tx.Insert(&Share{
+			BasketID: basket.ID,
+			UserID:   user.ID,
+		})
+	})
 }
