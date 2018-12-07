@@ -8,6 +8,7 @@ package models
 import (
 	strfmt "github.com/go-openapi/strfmt"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
 )
 
@@ -15,15 +16,39 @@ import (
 // swagger:model Share
 type Share struct {
 
-	// id
-	ID string `json:"id,omitempty"`
-
-	// user Id
-	UserID string `json:"userId,omitempty"`
+	// user
+	User *User `json:"user,omitempty"`
 }
 
 // Validate validates this share
 func (m *Share) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateUser(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *Share) validateUser(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.User) { // not required
+		return nil
+	}
+
+	if m.User != nil {
+		if err := m.User.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("user")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

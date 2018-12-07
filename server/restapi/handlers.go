@@ -6,6 +6,7 @@ import (
 	"github.com/itimofeev/auchan/server/restapi/operations/basket"
 	"github.com/itimofeev/auchan/server/restapi/operations/goods"
 	"github.com/itimofeev/auchan/server/restapi/operations/product"
+	"github.com/itimofeev/auchan/server/restapi/operations/share"
 	"github.com/itimofeev/auchan/server/restapi/operations/user"
 	"github.com/itimofeev/auchan/service"
 	"github.com/itimofeev/auchan/store"
@@ -94,13 +95,13 @@ var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(f
 })
 
 var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
-	goods, err := Service.GetGoodsForBasket(&store.Basket{ID: params.BasketID})
+	ggoods, err := Service.GetGoodsForBasket(&store.Basket{ID: params.BasketID})
 	if err != nil {
 		return util.ConvertHTTPErrorToResponse(err)
 	}
 
-	var resp = make([]*models.Goods, 0, len(goods))
-	for _, g := range goods {
+	var resp = make([]*models.Goods, 0, len(ggoods))
+	for _, g := range ggoods {
 		resp = append(resp, &models.Goods{
 			ID:        g.ID,
 			Completed: g.Completed,
@@ -111,5 +112,23 @@ var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(
 		})
 	}
 
-	return middleware.NotImplemented("operation goods.GetAllGoodsInBasket has not yet been implemented")
+	return goods.NewGetAllGoodsInBasketOK().WithPayload(resp)
+})
+
+var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
+	sshares, err := Service.GetSharesForBasket(&store.Basket{ID: params.BasketID})
+	if err != nil {
+		return util.ConvertHTTPErrorToResponse(err)
+	}
+
+	var resp = make([]*models.Share, 0, len(sshares))
+	for _, g := range sshares {
+		resp = append(resp, &models.Share{
+			User: &models.User{
+				ID:    g.UserID,
+				Email: "TODO",
+			},
+		})
+	}
+	return share.NewGetAllSharesForBasketOK().WithPayload(resp)
 })

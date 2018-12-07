@@ -161,8 +161,9 @@ paths:
       summary: get all shares for basket
       operationId: getAllSharesForBasket
       parameters:
-      - name: "basketId"
-        type: "string"
+      - name: basketId
+        type: integer
+        format: int64
         in: "path"
         required: true
       responses:
@@ -236,9 +237,7 @@ definitions:
         format: int64
       email:
         type: string
-      
 
-        
   Product:
     type: object
     properties:
@@ -265,10 +264,8 @@ definitions:
   Share:
     type: object
     properties:
-      id:
-        type: string
-      userId:
-        type: string
+      user:
+        $ref: '#/definitions/User'
         
   Goods:
     type: object

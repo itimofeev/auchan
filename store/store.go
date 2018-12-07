@@ -128,3 +128,7 @@ func (s *Store) SearchProducts(name string) (products []*Product, err error) {
 func (s *Store) GetGoodsForBasket(basket *Basket) (goods []*Goods, err error) {
 	return goods, s.db.Model(&goods).Where("basket_id = ?", basket.ID).Select()
 }
+
+func (s *Store) GetSharesForBasket(basket *Basket) (shares []*Share, err error) {
+	return shares, s.db.Model(&shares).Where("basket_id = ?", basket.ID).Select()
+}

@@ -180,7 +180,8 @@ func init() {
         "operationId": "getAllSharesForBasket",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -389,11 +390,8 @@ func init() {
     "Share": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string"
+        "user": {
+          "$ref": "#/definitions/User"
         }
       }
     },
@@ -603,7 +601,8 @@ func init() {
         "operationId": "getAllSharesForBasket",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -812,11 +811,8 @@ func init() {
     "Share": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string"
+        "user": {
+          "$ref": "#/definitions/User"
         }
       }
     },

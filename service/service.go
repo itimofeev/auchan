@@ -39,3 +39,7 @@ func (s *Service) SearchProducts(title string) (products []*store.Product, err e
 func (s *Service) GetGoodsForBasket(basket *store.Basket) (goods []*store.Goods, err error) {
 	return s.store.GetGoodsForBasket(basket)
 }
+
+func (s *Service) GetSharesForBasket(basket *store.Basket) (shares []*store.Share, err error) {
+	return s.store.GetSharesForBasket(basket)
+}

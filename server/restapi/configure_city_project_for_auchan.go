@@ -52,9 +52,7 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	api.BasketCreateBasketHandler = BasketCreateBasketHandler
 	api.BasketGetAllBasketsHandler = BasketGetAllBasketsHandler
 	api.GoodsGetAllGoodsInBasketHandler = GoodsGetAllGoodsInBasketHandler
-	api.ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
-		return middleware.NotImplemented("operation share.GetAllSharesForBasket has not yet been implemented")
-	})
+	api.ShareGetAllSharesForBasketHandler = ShareGetAllSharesForBasketHandler
 	api.ProductGetProductsByParamsHandler = ProductGetProductsByParamsHandler
 	api.UserGetCurrentUserHandler = UserGetCurrentUserHandler
 	api.UserLoginUserHandler = UserLoginUserHandler
