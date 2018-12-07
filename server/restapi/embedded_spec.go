@@ -112,11 +112,11 @@ func init() {
           }
         }
       },
-      "put": {
+      "post": {
         "tags": [
           "goods"
         ],
-        "summary": "add goods to basket",
+        "summary": "change goods quantity in basket",
         "operationId": "addGoodsToBasket",
         "parameters": [
           {
@@ -136,6 +136,9 @@ func init() {
               "properties": {
                 "productId": {
                   "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
                 }
               }
             }
@@ -236,7 +239,10 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/ProductList"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
+              }
             }
           },
           "404": {
@@ -352,43 +358,40 @@ func init() {
     "Goods": {
       "type": "object",
       "properties": {
+        "completed": {
+          "type": "boolean"
+        },
         "id": {
           "type": "string"
         },
         "price": {
           "type": "integer"
         },
-        "productId": {
-          "type": "string"
+        "product": {
+          "$ref": "#/definitions/Product"
         },
         "quantity": {
           "type": "integer"
+        },
+        "unit": {
+          "type": "string"
         }
       }
     },
     "Product": {
       "type": "object",
       "properties": {
+        "category": {
+          "type": "string"
+        },
         "id": {
+          "type": "string"
+        },
+        "imageUrl": {
           "type": "string"
         },
         "name": {
           "type": "string"
-        }
-      }
-    },
-    "ProductList": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Product"
-          }
-        },
-        "total": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
@@ -541,11 +544,11 @@ func init() {
           }
         }
       },
-      "put": {
+      "post": {
         "tags": [
           "goods"
         ],
-        "summary": "add goods to basket",
+        "summary": "change goods quantity in basket",
         "operationId": "addGoodsToBasket",
         "parameters": [
           {
@@ -565,6 +568,9 @@ func init() {
               "properties": {
                 "productId": {
                   "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
                 }
               }
             }
@@ -665,7 +671,10 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/ProductList"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
+              }
             }
           },
           "404": {
@@ -781,43 +790,40 @@ func init() {
     "Goods": {
       "type": "object",
       "properties": {
+        "completed": {
+          "type": "boolean"
+        },
         "id": {
           "type": "string"
         },
         "price": {
           "type": "integer"
         },
-        "productId": {
-          "type": "string"
+        "product": {
+          "$ref": "#/definitions/Product"
         },
         "quantity": {
           "type": "integer"
+        },
+        "unit": {
+          "type": "string"
         }
       }
     },
     "Product": {
       "type": "object",
       "properties": {
+        "category": {
+          "type": "string"
+        },
         "id": {
+          "type": "string"
+        },
+        "imageUrl": {
           "type": "string"
         },
         "name": {
           "type": "string"
-        }
-      }
-    },
-    "ProductList": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Product"
-          }
-        },
-        "total": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },

@@ -8,6 +8,7 @@ package models
 import (
 	strfmt "github.com/go-openapi/strfmt"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
 )
 
@@ -15,21 +16,54 @@ import (
 // swagger:model Goods
 type Goods struct {
 
+	// completed
+	Completed bool `json:"completed,omitempty"`
+
 	// id
 	ID string `json:"id,omitempty"`
 
 	// price
 	Price int64 `json:"price,omitempty"`
 
-	// product Id
-	ProductID string `json:"productId,omitempty"`
+	// product
+	Product *Product `json:"product,omitempty"`
 
 	// quantity
 	Quantity int64 `json:"quantity,omitempty"`
+
+	// unit
+	Unit string `json:"unit,omitempty"`
 }
 
 // Validate validates this goods
 func (m *Goods) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateProduct(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *Goods) validateProduct(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Product) { // not required
+		return nil
+	}
+
+	if m.Product != nil {
+		if err := m.Product.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("product")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

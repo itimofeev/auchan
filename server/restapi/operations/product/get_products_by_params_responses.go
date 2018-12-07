@@ -25,7 +25,7 @@ type GetProductsByParamsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.ProductList `json:"body,omitempty"`
+	Payload []*models.Product `json:"body,omitempty"`
 }
 
 // NewGetProductsByParamsOK creates GetProductsByParamsOK with default headers values
@@ -35,13 +35,13 @@ func NewGetProductsByParamsOK() *GetProductsByParamsOK {
 }
 
 // WithPayload adds the payload to the get products by params o k response
-func (o *GetProductsByParamsOK) WithPayload(payload *models.ProductList) *GetProductsByParamsOK {
+func (o *GetProductsByParamsOK) WithPayload(payload []*models.Product) *GetProductsByParamsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get products by params o k response
-func (o *GetProductsByParamsOK) SetPayload(payload *models.ProductList) {
+func (o *GetProductsByParamsOK) SetPayload(payload []*models.Product) {
 	o.Payload = payload
 }
 
@@ -49,12 +49,15 @@ func (o *GetProductsByParamsOK) SetPayload(payload *models.ProductList) {
 func (o *GetProductsByParamsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
+	payload := o.Payload
+	if payload == nil {
+		payload = make([]*models.Product, 0, 50)
 	}
+
+	if err := producer.Produce(rw, payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
+	}
+
 }
 
 // GetProductsByParamsNotFoundCode is the HTTP code returned for type GetProductsByParamsNotFound

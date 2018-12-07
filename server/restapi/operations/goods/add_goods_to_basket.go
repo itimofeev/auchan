@@ -31,9 +31,9 @@ func NewAddGoodsToBasket(ctx *middleware.Context, handler AddGoodsToBasketHandle
 	return &AddGoodsToBasket{Context: ctx, Handler: handler}
 }
 
-/*AddGoodsToBasket swagger:route PUT /basket/{basketId}/goods goods addGoodsToBasket
+/*AddGoodsToBasket swagger:route POST /basket/{basketId}/goods goods addGoodsToBasket
 
-add goods to basket
+change goods quantity in basket
 
 */
 type AddGoodsToBasket struct {
@@ -65,6 +65,9 @@ type AddGoodsToBasketBody struct {
 
 	// product Id
 	ProductID string `json:"productId,omitempty"`
+
+	// quantity
+	Quantity int64 `json:"quantity,omitempty"`
 }
 
 // Validate validates this add goods to basket body

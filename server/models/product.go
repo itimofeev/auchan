@@ -15,8 +15,14 @@ import (
 // swagger:model Product
 type Product struct {
 
+	// category
+	Category string `json:"category,omitempty"`
+
 	// id
 	ID string `json:"id,omitempty"`
+
+	// image Url
+	ImageURL string `json:"imageUrl,omitempty"`
 
 	// name
 	Name string `json:"name,omitempty"`

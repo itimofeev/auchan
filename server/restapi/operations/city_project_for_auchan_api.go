@@ -326,10 +326,10 @@ func (o *CityProjectForAuchanAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
-	if o.handlers["PUT"] == nil {
-		o.handlers["PUT"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["PUT"]["/basket/{basketId}/goods"] = goods.NewAddGoodsToBasket(o.context, o.GoodsAddGoodsToBasketHandler)
+	o.handlers["POST"]["/basket/{basketId}/goods"] = goods.NewAddGoodsToBasket(o.context, o.GoodsAddGoodsToBasketHandler)
 
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
