@@ -8,7 +8,7 @@ import (
 func TestName(t *testing.T) {
 	s := NewStore("postgresql://postgres@db:5432/postgres?sslmode=disable")
 
-	user, err := s.CreateUser("adsfasdf@mail.ru", "123")
+	user, err := s.CreateUser("user1@gmail.com", "123")
 	require.NoError(t, err)
 
 	loaded, err := s.GetUserByEmail("adsfasdf@mail.ru")

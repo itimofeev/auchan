@@ -55,3 +55,9 @@ func (s *Store) GetUserByEmail(email string) (*User, error) {
 		Select()
 	return user, err
 }
+
+func (s *Store) GetUserByID(id int64) (*User, error) {
+	user := &User{ID: id}
+	err := s.db.Select(user)
+	return user, err
+}
