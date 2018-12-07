@@ -20,7 +20,7 @@ gen-client:
 		-f tools/swagger.yml
 
 download:
-	wget -O tools/swagger2.yml\
+	wget -O tools/swagger.yml\
     		--header="Content-type: application/yaml" \
     		--header="Authorization: eyJUb2tlblR5cGUiOiJBUEkiLCJzYWx0IjoiMDY2NjM4MTQtODExMS00YTZkLWJmODEtMmFmOGFjNmU5ZDBiIiwiYWxnIjoiSFM1MTIifQ.eyJqdGkiOiIuZ2l0aHViLjE0Mzk4NCIsImlhdCI6MTUzMzU3MjY5NX0.x0DsS4uPuzA1eYxYOSdlGOzLXfdGyIPNXrRm8KYG1Xe82h2J48y_0AE0v1tsUZiyvwU6cZS3BBikjkiYbtJdtw" \
     		https://api.swaggerhub.com/apis/itimofeev/cityproject.auchan

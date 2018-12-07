@@ -1,0 +1,291 @@
+swagger: '2.0'
+info:
+  description: |
+    This is a server for collaborative shopping.
+  version: 1.0.0
+  title: CityProject for Auchan
+host: aeuchan.swagger.io
+basePath: /v1
+tags:
+  - name: user
+    description: Operations about user
+  - name: basket
+    description: Operations about basket of goods
+  - name: product
+    description: Operations about products
+  - name: goods
+    description: Operations about goods (product added to the basket with price and quantity)
+  - name: share
+    description: Operations about share of basket with somebody
+schemes:
+  - http
+
+paths:
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      operationId: loginUser
+      produces:
+        - application/json
+      parameters:
+        - name: email
+          in: query
+          description: The user email for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: string
+        401:
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /user/{email}:
+    get:
+      tags:
+        - user
+      summary: Get user by email
+      operationId: getUserByName
+      produces:
+        - application/json
+      parameters:
+        - name: email
+          in: path
+          description: The name that needs to be fetched.
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Invalid username supplied
+        404:
+          description: User not found
+
+  /product:
+    get:
+      tags:
+        - product
+      summary: search for products
+      operationId: getProductsByParams
+      parameters:
+        - name: name
+          in: query
+          description: The name that needs to be fetched.
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProductList'
+        404:
+          description: Not found
+
+  /basket:
+    put:
+      tags:
+        - basket
+      summary: create basket
+      operationId: createBasket
+      parameters:
+        - name: "basket"
+          in: "body"
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Basket'
+        404:
+          description: Not found
+    get:
+      tags:
+        - basket
+      summary: get all users baskets
+      operationId: getAllBaskets
+      responses:
+        200:
+          description: returns all available baskets
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Basket'
+
+  /basket/{basketId}/share:
+    put:
+      tags:
+        - share
+      summary: add user to share
+      operationId: addUserToShare
+      parameters:
+        - name: "basketId"
+          type: "string"
+          in: "path"
+          required: true
+        - name: "share"
+          in: "body"
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+      responses:
+        200:
+          description: returns created share
+          schema:
+            $ref: '#/definitions/Share'
+
+    get:
+      tags:
+        - share
+      summary: get all shares for basket
+      operationId: getAllSharesForBasket
+      parameters:
+        - name: "basketId"
+          type: "string"
+          in: "path"
+          required: true
+      responses:
+        200:
+          description: returns created share
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Share'
+
+  /basket/{basketId}/goods:
+    put:
+      summary: add goods to basket
+      operationId: addGoodsToBasket
+      tags:
+        - goods
+      parameters:
+        - name: "basketId"
+          type: "string"
+          in: "path"
+          required: true
+        - name: "goods"
+          in: "body"
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              productId:
+                type: string
+      responses:
+        200:
+          description: returns current state of goods
+          schema:
+            $ref: '#/definitions/Goods'
+
+    get:
+      summary: return all goods in basket
+      operationId: getAllGoodsInBasket
+      tags:
+        - goods
+      parameters:
+        - name: "basketId"
+          type: "string"
+          in: "path"
+          required: true
+      responses:
+        200:
+          description: returns goods in basket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Goods'
+
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+
+definitions:
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      email:
+        type: string
+
+  ProductList:
+    type: object
+    properties:
+      total:
+        type: integer
+        format: int64
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Product'
+
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+
+  Basket:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+
+  Share:
+    type: object
+    properties:
+      id:
+        type: string
+      userId:
+        type: string
+
+  Goods:
+    type: object
+    properties:
+      id:
+        type: string
+      productId:
+        type: string
+      quantity:
+        type: integer
+      price:
+        type: integer
