@@ -124,3 +124,7 @@ func (s *Store) CreateBasket(user *User, basketName string) (*Basket, error) {
 func (s *Store) SearchProducts(name string) (products []*Product, err error) {
 	return products, s.db.Model(&products).Where("name like ?", name+"%").Select()
 }
+
+func (s *Store) GetGoodsForBasket(basket *Basket) (goods []*Goods, err error) {
+	return goods, s.db.Model(&goods).Where("basket_id = ?", basket.ID).Select()
+}

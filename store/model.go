@@ -29,9 +29,10 @@ type Product struct {
 
 type Goods struct {
 	ID        int64
+	BasketID  int64   `pg:",notnull"`
 	Product   Product `pg:",notnull"`
 	Completed bool    `pg:",notnull"`
-	Quantity  int     `pg:",notnull"`
-	Price     int     `pg:",notnull"`
+	Quantity  int64   `pg:",notnull"`
+	Price     int64   `pg:",notnull"`
 	Unit      string  `pg:",notnull"`
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/itimofeev/auchan/server/models"
 	"github.com/itimofeev/auchan/server/restapi/operations/basket"
+	"github.com/itimofeev/auchan/server/restapi/operations/goods"
 	"github.com/itimofeev/auchan/server/restapi/operations/product"
 	"github.com/itimofeev/auchan/server/restapi/operations/user"
 	"github.com/itimofeev/auchan/service"
@@ -90,4 +91,25 @@ var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(f
 	}
 
 	return product.NewGetProductsByParamsOK().WithPayload(resp)
+})
+
+var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
+	goods, err := Service.GetGoodsForBasket(&store.Basket{ID: params.BasketID})
+	if err != nil {
+		return util.ConvertHTTPErrorToResponse(err)
+	}
+
+	var resp = make([]*models.Goods, 0, len(goods))
+	for _, g := range goods {
+		resp = append(resp, &models.Goods{
+			ID:        g.ID,
+			Completed: g.Completed,
+			Product:   nil,
+			Price:     g.Price,
+			Quantity:  g.Quantity,
+			Unit:      g.Unit,
+		})
+	}
+
+	return middleware.NotImplemented("operation goods.GetAllGoodsInBasket has not yet been implemented")
 })

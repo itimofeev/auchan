@@ -20,7 +20,7 @@ type Goods struct {
 	Completed bool `json:"completed,omitempty"`
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID int64 `json:"id,omitempty"`
 
 	// price
 	Price int64 `json:"price,omitempty"`

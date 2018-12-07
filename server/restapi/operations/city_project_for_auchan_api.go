@@ -70,9 +70,6 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		UserLoginUserHandler: user.LoginUserHandlerFunc(func(params user.LoginUserParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserLoginUser has not yet been implemented")
 		}),
-		UserLogoutUserHandler: user.LogoutUserHandlerFunc(func(params user.LogoutUserParams) middleware.Responder {
-			return middleware.NotImplemented("operation UserLogoutUser has not yet been implemented")
-		}),
 
 		// Applies when the "X-Auth-Token" header is set
 		AuthTokenAuth: func(token string) (interface{}, error) {
@@ -138,8 +135,6 @@ type CityProjectForAuchanAPI struct {
 	ProductGetProductsByParamsHandler product.GetProductsByParamsHandler
 	// UserLoginUserHandler sets the operation handler for the login user operation
 	UserLoginUserHandler user.LoginUserHandler
-	// UserLogoutUserHandler sets the operation handler for the logout user operation
-	UserLogoutUserHandler user.LogoutUserHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -241,10 +236,6 @@ func (o *CityProjectForAuchanAPI) Validate() error {
 
 	if o.UserLoginUserHandler == nil {
 		unregistered = append(unregistered, "user.LoginUserHandler")
-	}
-
-	if o.UserLogoutUserHandler == nil {
-		unregistered = append(unregistered, "user.LogoutUserHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -399,11 +390,6 @@ func (o *CityProjectForAuchanAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/user/login"] = user.NewLoginUser(o.context, o.UserLoginUserHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/user/logout"] = user.NewLogoutUser(o.context, o.UserLogoutUserHandler)
 
 }
 

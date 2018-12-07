@@ -10,11 +10,13 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
+
+	"github.com/go-openapi/swag"
 )
 
 // GetAllGoodsInBasketURL generates an URL for the get all goods in basket operation
 type GetAllGoodsInBasketURL struct {
-	BasketID string
+	BasketID int64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -42,7 +44,7 @@ func (o *GetAllGoodsInBasketURL) Build() (*url.URL, error) {
 
 	var _path = "/basket/{basketId}/goods"
 
-	basketID := o.BasketID
+	basketID := swag.FormatInt64(o.BasketID)
 	if basketID != "" {
 		_path = strings.Replace(_path, "{basketId}", basketID, -1)
 	} else {

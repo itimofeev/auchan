@@ -35,3 +35,7 @@ func (s *Service) GetUserBaskets(user *store.User) (baskets []*store.Basket, err
 func (s *Service) SearchProducts(title string) (products []*store.Product, err error) {
 	return s.store.SearchProducts(title)
 }
+
+func (s *Service) GetGoodsForBasket(basket *store.Basket) (goods []*store.Goods, err error) {
+	return s.store.GetGoodsForBasket(basket)
+}

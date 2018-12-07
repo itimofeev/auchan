@@ -53,16 +53,7 @@ paths:
               description: token to pass in every request to user auth
         401:
           description: Invalid username/password supplied
-  /user/logout:
-    get:
-      tags:
-      - user
-      summary: Logs out current logged in user session
-      operationId: logoutUser
-      parameters: []
-      responses:
-        default:
-          description: successful operation
+
   /user:
     get:
       tags:
@@ -216,8 +207,9 @@ paths:
       tags: 
       - goods
       parameters:
-      - name: "basketId"
-        type: "string"
+      - name: basketId
+        type: integer
+        format: int64
         in: "path"
         required: true
       responses:
@@ -282,7 +274,8 @@ definitions:
     type: object
     properties:
       id:
-        type: string
+        type: integer
+        format: int64
       product:
         $ref: '#/definitions/Product'
       completed:

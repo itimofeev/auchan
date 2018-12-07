@@ -13,7 +13,6 @@ import (
 	"github.com/itimofeev/auchan/server/restapi/operations"
 	"github.com/itimofeev/auchan/server/restapi/operations/goods"
 	"github.com/itimofeev/auchan/server/restapi/operations/share"
-	"github.com/itimofeev/auchan/server/restapi/operations/user"
 )
 
 //go:generate swagger generate server --target ../server --name CityProjectForAuchan --spec ../tools/swagger.yml
@@ -52,18 +51,13 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	})
 	api.BasketCreateBasketHandler = BasketCreateBasketHandler
 	api.BasketGetAllBasketsHandler = BasketGetAllBasketsHandler
-	api.GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
-		return middleware.NotImplemented("operation goods.GetAllGoodsInBasket has not yet been implemented")
-	})
+	api.GoodsGetAllGoodsInBasketHandler = GoodsGetAllGoodsInBasketHandler
 	api.ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
 		return middleware.NotImplemented("operation share.GetAllSharesForBasket has not yet been implemented")
 	})
 	api.ProductGetProductsByParamsHandler = ProductGetProductsByParamsHandler
 	api.UserGetCurrentUserHandler = UserGetCurrentUserHandler
 	api.UserLoginUserHandler = UserLoginUserHandler
-	api.UserLogoutUserHandler = user.LogoutUserHandlerFunc(func(params user.LogoutUserParams) middleware.Responder {
-		return middleware.NotImplemented("operation user.LogoutUser has not yet been implemented")
-	})
 
 	api.ServerShutdown = func() {}
 

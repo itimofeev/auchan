@@ -110,7 +110,8 @@ func init() {
         "operationId": "getAllGoodsInBasket",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -327,20 +328,6 @@ func init() {
           }
         }
       }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "operationId": "logoutUser",
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -363,7 +350,8 @@ func init() {
           "type": "boolean"
         },
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "price": {
           "type": "integer"
@@ -545,7 +533,8 @@ func init() {
         "operationId": "getAllGoodsInBasket",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -762,20 +751,6 @@ func init() {
           }
         }
       }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "operationId": "logoutUser",
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -798,7 +773,8 @@ func init() {
           "type": "boolean"
         },
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "price": {
           "type": "integer"
