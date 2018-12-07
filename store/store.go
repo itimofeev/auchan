@@ -1,7 +1,6 @@
 package store
 
 import (
-	"bitbucket.org/Axxonsoft/axxoncloudgo/model"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 	"github.com/itimofeev/auchan/util"
@@ -22,19 +21,37 @@ func NewStore(connectURL string) *Store {
 		util.Log.Printf("%s %s", time.Since(event.StartTime), query)
 	})
 
-	return &Store{}
+	return &Store{
+		db: db,
+	}
 }
 
 type Store struct {
-	db pg.DB
+	db *pg.DB
 }
 
 func createSchema(db *pg.DB) error {
-	err := db.CreateTable((*model.FileInfo)(nil), &orm.CreateTableOptions{
+	err := db.CreateTable((*User)(nil), &orm.CreateTableOptions{
 		IfNotExists: true,
 	})
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *Store) CreateUser(email, password string) (*User, error) {
+	user := &User{
+		Email:    email,
+		Password: password,
+	}
+	return user, s.db.Insert(user)
+}
+
+func (s *Store) GetUserByEmail(email string) (*User, error) {
+	user := &User{}
+	err := s.db.Model(user).
+		Where("email = ?", email).
+		Select()
+	return user, err
 }
