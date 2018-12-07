@@ -9,7 +9,7 @@ deploy-db:
 gen-server:
 	docker run --rm -v $(GOPATH):/go/ -w /go/src/github.com/itimofeev/auchan -t $(SWAGGER_IMAGE) \
 		generate server \
-		--target=auchan \
+		--target=server \
 		-f tools/swagger.yml
 
 gen-client:

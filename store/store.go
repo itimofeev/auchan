@@ -1,7 +1,5 @@
 package store
 
-///Users/ilyatimofee/go/src/github.com
-
 import (
 	"bitbucket.org/Axxonsoft/axxoncloudgo/model"
 	"github.com/go-pg/pg"
