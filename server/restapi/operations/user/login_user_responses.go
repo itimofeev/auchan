@@ -14,16 +14,15 @@ import (
 // LoginUserOKCode is the HTTP code returned for type LoginUserOK
 const LoginUserOKCode int = 200
 
-/*LoginUserOK successful operation
+/*LoginUserOK OK
 
 swagger:response loginUserOK
 */
 type LoginUserOK struct {
+	/*token to pass in every request to user auth
 
-	/*
-	  In: Body
-	*/
-	Payload string `json:"body,omitempty"`
+	 */
+	XAuthToken string `json:"X-Auth-Token"`
 }
 
 // NewLoginUserOK creates LoginUserOK with default headers values
@@ -32,26 +31,30 @@ func NewLoginUserOK() *LoginUserOK {
 	return &LoginUserOK{}
 }
 
-// WithPayload adds the payload to the login user o k response
-func (o *LoginUserOK) WithPayload(payload string) *LoginUserOK {
-	o.Payload = payload
+// WithXAuthToken adds the xAuthToken to the login user o k response
+func (o *LoginUserOK) WithXAuthToken(xAuthToken string) *LoginUserOK {
+	o.XAuthToken = xAuthToken
 	return o
 }
 
-// SetPayload sets the payload to the login user o k response
-func (o *LoginUserOK) SetPayload(payload string) {
-	o.Payload = payload
+// SetXAuthToken sets the xAuthToken to the login user o k response
+func (o *LoginUserOK) SetXAuthToken(xAuthToken string) {
+	o.XAuthToken = xAuthToken
 }
 
 // WriteResponse to the client
 func (o *LoginUserOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(200)
-	payload := o.Payload
-	if err := producer.Produce(rw, payload); err != nil {
-		panic(err) // let the recovery middleware deal with this
+	// response header X-Auth-Token
+
+	xAuthToken := o.XAuthToken
+	if xAuthToken != "" {
+		rw.Header().Set("X-Auth-Token", xAuthToken)
 	}
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(200)
 }
 
 // LoginUserUnauthorizedCode is the HTTP code returned for type LoginUserUnauthorized

@@ -279,9 +279,12 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "string"
+            "description": "OK",
+            "headers": {
+              "X-Auth-Token": {
+                "type": "string",
+                "description": "token to pass in every request to user auth"
+              }
             }
           },
           "401": {
@@ -309,6 +312,11 @@ func init() {
     },
     "/user/{email}": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -420,9 +428,9 @@ func init() {
     }
   },
   "securityDefinitions": {
-    "api_key": {
+    "AuthToken": {
       "type": "apiKey",
-      "name": "api_key",
+      "name": "X-Auth-Token",
       "in": "header"
     }
   },
@@ -711,9 +719,12 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "string"
+            "description": "OK",
+            "headers": {
+              "X-Auth-Token": {
+                "type": "string",
+                "description": "token to pass in every request to user auth"
+              }
             }
           },
           "401": {
@@ -741,6 +752,11 @@ func init() {
     },
     "/user/{email}": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -852,9 +868,9 @@ func init() {
     }
   },
   "securityDefinitions": {
-    "api_key": {
+    "AuthToken": {
       "type": "apiKey",
-      "name": "api_key",
+      "name": "X-Auth-Token",
       "in": "header"
     }
   },

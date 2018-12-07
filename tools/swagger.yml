@@ -42,9 +42,11 @@ paths:
           type: string
       responses:
         200:
-          description: successful operation
-          schema:
-            type: string
+          description: OK
+          headers:
+            X-Auth-Token:
+              type: string
+              description: token to pass in every request to user auth
         401:
           description: Invalid username/password supplied
   /user/logout:
@@ -63,6 +65,8 @@ paths:
     get:
       tags:
         - user
+      security:
+        - AuthToken: []
       summary: Get user by email
       operationId: getUserByName
       produces:
@@ -231,10 +235,10 @@ paths:
               $ref: '#/definitions/Goods'
 
 securityDefinitions:
-  api_key:
+  AuthToken:
     type: apiKey
-    name: api_key
     in: header
+    name: X-Auth-Token
 
 definitions:
 

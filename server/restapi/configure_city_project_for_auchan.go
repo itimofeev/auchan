@@ -38,6 +38,16 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	// Applies when the "X-Auth-Token" header is set
+	api.AuthTokenAuth = func(token string) (interface{}, error) {
+		return nil, errors.NotImplemented("api key auth (AuthToken) X-Auth-Token from header param [X-Auth-Token] has not yet been implemented")
+	}
+
+	// Set your custom authorizer if needed. Default one is security.Authorized()
+	// Expected interface runtime.Authorizer
+	//
+	// Example:
+	// api.APIAuthorizer = security.Authorized()
 	api.GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams) middleware.Responder {
 		return middleware.NotImplemented("operation goods.AddGoodsToBasket has not yet been implemented")
 	})
@@ -59,12 +69,10 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	api.ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
 		return middleware.NotImplemented("operation product.GetProductsByParams has not yet been implemented")
 	})
-	api.UserGetUserByNameHandler = user.GetUserByNameHandlerFunc(func(params user.GetUserByNameParams) middleware.Responder {
+	api.UserGetUserByNameHandler = user.GetUserByNameHandlerFunc(func(params user.GetUserByNameParams, principal interface{}) middleware.Responder {
 		return middleware.NotImplemented("operation user.GetUserByName has not yet been implemented")
 	})
-	api.UserLoginUserHandler = user.LoginUserHandlerFunc(func(params user.LoginUserParams) middleware.Responder {
-		return middleware.NotImplemented("operation user.LoginUser has not yet been implemented")
-	})
+	api.UserLoginUserHandler = UserLoginUserHandler
 	api.UserLogoutUserHandler = user.LogoutUserHandlerFunc(func(params user.LogoutUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation user.LogoutUser has not yet been implemented")
 	})

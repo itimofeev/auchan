@@ -64,7 +64,7 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		ProductGetProductsByParamsHandler: product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProductGetProductsByParams has not yet been implemented")
 		}),
-		UserGetUserByNameHandler: user.GetUserByNameHandlerFunc(func(params user.GetUserByNameParams) middleware.Responder {
+		UserGetUserByNameHandler: user.GetUserByNameHandlerFunc(func(params user.GetUserByNameParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation UserGetUserByName has not yet been implemented")
 		}),
 		UserLoginUserHandler: user.LoginUserHandlerFunc(func(params user.LoginUserParams) middleware.Responder {
@@ -73,6 +73,14 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		UserLogoutUserHandler: user.LogoutUserHandlerFunc(func(params user.LogoutUserParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserLogoutUser has not yet been implemented")
 		}),
+
+		// Applies when the "X-Auth-Token" header is set
+		AuthTokenAuth: func(token string) (interface{}, error) {
+			return nil, errors.NotImplemented("api key auth (AuthToken) X-Auth-Token from header param [X-Auth-Token] has not yet been implemented")
+		},
+
+		// default authorizer is authorized meaning no requests are blocked
+		APIAuthorizer: security.Authorized(),
 	}
 }
 
@@ -104,6 +112,13 @@ type CityProjectForAuchanAPI struct {
 
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
+
+	// AuthTokenAuth registers a function that takes a token and returns a principal
+	// it performs authentication based on an api key X-Auth-Token provided in the header
+	AuthTokenAuth func(string) (interface{}, error)
+
+	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
+	APIAuthorizer runtime.Authorizer
 
 	// GoodsAddGoodsToBasketHandler sets the operation handler for the add goods to basket operation
 	GoodsAddGoodsToBasketHandler goods.AddGoodsToBasketHandler
@@ -188,6 +203,10 @@ func (o *CityProjectForAuchanAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.AuthTokenAuth == nil {
+		unregistered = append(unregistered, "XAuthTokenAuth")
+	}
+
 	if o.GoodsAddGoodsToBasketHandler == nil {
 		unregistered = append(unregistered, "goods.AddGoodsToBasketHandler")
 	}
@@ -243,14 +262,24 @@ func (o *CityProjectForAuchanAPI) ServeErrorFor(operationID string) func(http.Re
 // AuthenticatorsFor gets the authenticators for the specified security schemes
 func (o *CityProjectForAuchanAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 
-	return nil
+	result := make(map[string]runtime.Authenticator)
+	for name, scheme := range schemes {
+		switch name {
+
+		case "AuthToken":
+
+			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.AuthTokenAuth)
+
+		}
+	}
+	return result
 
 }
 
 // Authorizer returns the registered authorizer
 func (o *CityProjectForAuchanAPI) Authorizer() runtime.Authorizer {
 
-	return nil
+	return o.APIAuthorizer
 
 }
 
