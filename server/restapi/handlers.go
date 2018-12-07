@@ -55,3 +55,19 @@ var BasketCreateBasketHandler = basket.CreateBasketHandlerFunc(func(params baske
 		Name: created.Name,
 	})
 })
+
+var BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams, principal interface{}) middleware.Responder {
+	usr := principal.(*models.User)
+	b, err := Service.GetUserBaskets(&store.User{ID: usr.ID})
+	if err != nil {
+		return util.ConvertHTTPErrorToResponse(err)
+	}
+	bs := make([]*models.Basket, 0, len(b))
+	for _, bb := range b {
+		bs = append(bs, &models.Basket{
+			ID:   bb.ID,
+			Name: bb.Name,
+		})
+	}
+	return basket.NewGetAllBasketsOK().WithPayload(bs)
+})

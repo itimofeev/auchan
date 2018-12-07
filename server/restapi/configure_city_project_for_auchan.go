@@ -11,7 +11,6 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/itimofeev/auchan/server/restapi/operations"
-	"github.com/itimofeev/auchan/server/restapi/operations/basket"
 	"github.com/itimofeev/auchan/server/restapi/operations/goods"
 	"github.com/itimofeev/auchan/server/restapi/operations/product"
 	"github.com/itimofeev/auchan/server/restapi/operations/share"
@@ -53,9 +52,7 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 		return middleware.NotImplemented("operation share.AddUserToShare has not yet been implemented")
 	})
 	api.BasketCreateBasketHandler = BasketCreateBasketHandler
-	api.BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams, principal interface{}) middleware.Responder {
-		return middleware.NotImplemented("operation basket.GetAllBaskets has not yet been implemented")
-	})
+	api.BasketGetAllBasketsHandler = BasketGetAllBasketsHandler
 	api.GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
 		return middleware.NotImplemented("operation goods.GetAllGoodsInBasket has not yet been implemented")
 	})

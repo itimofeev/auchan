@@ -76,6 +76,19 @@ func (s *Store) GetUserByID(id int64) (*User, error) {
 	return user, err
 }
 
+func (s *Store) GetUserBaskets(user *User) (baskets []*Basket, err error) {
+	_, err = s.db.Query(&baskets, `
+	SELECT
+		b.*
+	FROM
+		baskets b
+		JOIN shares s on b.id = s.basket_id
+	WHERE
+		s.user_id = ?
+`, user.ID)
+	return baskets, err
+}
+
 func (s *Store) CreateBasket(user *User, basketName string) (*Basket, error) {
 	basket := &Basket{
 		Name:  basketName,

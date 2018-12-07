@@ -27,3 +27,7 @@ func (s *Service) GetUserByID(id int64) (user *store.User, err error) {
 func (s *Service) CreateBasket(user *store.User, basketName string) (basket *store.Basket, err error) {
 	return s.store.CreateBasket(user, basketName)
 }
+
+func (s *Service) GetUserBaskets(user *store.User) (baskets []*store.Basket, err error) {
+	return s.store.GetUserBaskets(user)
+}
