@@ -12,7 +12,6 @@ import (
 
 	"github.com/itimofeev/auchan/server/restapi/operations"
 	"github.com/itimofeev/auchan/server/restapi/operations/goods"
-	"github.com/itimofeev/auchan/server/restapi/operations/product"
 	"github.com/itimofeev/auchan/server/restapi/operations/share"
 	"github.com/itimofeev/auchan/server/restapi/operations/user"
 )
@@ -59,9 +58,7 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	api.ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
 		return middleware.NotImplemented("operation share.GetAllSharesForBasket has not yet been implemented")
 	})
-	api.ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
-		return middleware.NotImplemented("operation product.GetProductsByParams has not yet been implemented")
-	})
+	api.ProductGetProductsByParamsHandler = ProductGetProductsByParamsHandler
 	api.UserGetCurrentUserHandler = UserGetCurrentUserHandler
 	api.UserLoginUserHandler = UserLoginUserHandler
 	api.UserLogoutUserHandler = user.LogoutUserHandlerFunc(func(params user.LogoutUserParams) middleware.Responder {

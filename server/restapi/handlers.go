@@ -4,6 +4,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/itimofeev/auchan/server/models"
 	"github.com/itimofeev/auchan/server/restapi/operations/basket"
+	"github.com/itimofeev/auchan/server/restapi/operations/product"
 	"github.com/itimofeev/auchan/server/restapi/operations/user"
 	"github.com/itimofeev/auchan/service"
 	"github.com/itimofeev/auchan/store"
@@ -70,4 +71,23 @@ var BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params bas
 		})
 	}
 	return basket.NewGetAllBasketsOK().WithPayload(bs)
+})
+
+var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
+	products, err := Service.SearchProducts(*params.Name)
+	if err != nil {
+		return util.ConvertHTTPErrorToResponse(err)
+	}
+
+	var resp = make([]*models.Product, 0, len(products))
+	for _, prod := range products {
+		resp = append(resp, &models.Product{
+			ID:         prod.ID,
+			Name:       prod.Name,
+			ImageURL:   prod.ImageURL,
+			CategoryID: prod.CategoryID,
+		})
+	}
+
+	return product.NewGetProductsByParamsOK().WithPayload(resp)
 })

@@ -31,3 +31,7 @@ func (s *Service) CreateBasket(user *store.User, basketName string) (basket *sto
 func (s *Service) GetUserBaskets(user *store.User) (baskets []*store.Basket, err error) {
 	return s.store.GetUserBaskets(user)
 }
+
+func (s *Service) SearchProducts(title string) (products []*store.Product, err error) {
+	return s.store.SearchProducts(title)
+}

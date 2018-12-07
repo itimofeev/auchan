@@ -382,11 +382,13 @@ func init() {
     "Product": {
       "type": "object",
       "properties": {
-        "category": {
-          "type": "string"
+        "category_id": {
+          "type": "integer",
+          "format": "int64"
         },
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "imageUrl": {
           "type": "string"
@@ -815,11 +817,13 @@ func init() {
     "Product": {
       "type": "object",
       "properties": {
-        "category": {
-          "type": "string"
+        "category_id": {
+          "type": "integer",
+          "format": "int64"
         },
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "imageUrl": {
           "type": "string"

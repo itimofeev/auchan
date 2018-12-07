@@ -28,6 +28,18 @@ func NewStore(connectURL string) *Store {
 	store.CreateUser("user1@gmail.com", "123")
 	store.CreateUser("user2@gmail.com", "123")
 
+	store.db.Insert(&Product{
+		Name:       "product1",
+		CategoryID: 10,
+		ImageURL:   "http://google.com",
+	})
+
+	store.db.Insert(&Product{
+		Name:       "profit2",
+		CategoryID: 20,
+		ImageURL:   "http://google.com",
+	})
+
 	return store
 }
 
@@ -42,6 +54,8 @@ func createSchema(db *pg.DB) error {
 		(*User)(nil),
 		(*Basket)(nil),
 		(*Share)(nil),
+		(*Product)(nil),
+		(*Goods)(nil),
 	} {
 		err := db.CreateTable(mdl, &orm.CreateTableOptions{
 			IfNotExists: true,
@@ -105,4 +119,8 @@ func (s *Store) CreateBasket(user *User, basketName string) (*Basket, error) {
 			UserID:   user.ID,
 		})
 	})
+}
+
+func (s *Store) SearchProducts(name string) (products []*Product, err error) {
+	return products, s.db.Model(&products).Where("name like ?", name+"%").Select()
 }

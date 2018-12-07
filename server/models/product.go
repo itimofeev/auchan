@@ -15,11 +15,11 @@ import (
 // swagger:model Product
 type Product struct {
 
-	// category
-	Category string `json:"category,omitempty"`
+	// category id
+	CategoryID int64 `json:"category_id,omitempty"`
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID int64 `json:"id,omitempty"`
 
 	// image Url
 	ImageURL string `json:"imageUrl,omitempty"`
