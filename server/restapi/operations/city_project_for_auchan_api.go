@@ -67,6 +67,9 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		ProductGetProductsByParamsHandler: product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
 			return middleware.NotImplemented("operation ProductGetProductsByParams has not yet been implemented")
 		}),
+		HelloHandler: HelloHandlerFunc(func(params HelloParams) middleware.Responder {
+			return middleware.NotImplemented("operation Hello has not yet been implemented")
+		}),
 		UserLoginUserHandler: user.LoginUserHandlerFunc(func(params user.LoginUserParams) middleware.Responder {
 			return middleware.NotImplemented("operation UserLoginUser has not yet been implemented")
 		}),
@@ -133,6 +136,8 @@ type CityProjectForAuchanAPI struct {
 	UserGetCurrentUserHandler user.GetCurrentUserHandler
 	// ProductGetProductsByParamsHandler sets the operation handler for the get products by params operation
 	ProductGetProductsByParamsHandler product.GetProductsByParamsHandler
+	// HelloHandler sets the operation handler for the hello operation
+	HelloHandler HelloHandler
 	// UserLoginUserHandler sets the operation handler for the login user operation
 	UserLoginUserHandler user.LoginUserHandler
 
@@ -232,6 +237,10 @@ func (o *CityProjectForAuchanAPI) Validate() error {
 
 	if o.ProductGetProductsByParamsHandler == nil {
 		unregistered = append(unregistered, "product.GetProductsByParamsHandler")
+	}
+
+	if o.HelloHandler == nil {
+		unregistered = append(unregistered, "HelloHandler")
 	}
 
 	if o.UserLoginUserHandler == nil {
@@ -385,6 +394,11 @@ func (o *CityProjectForAuchanAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/product"] = product.NewGetProductsByParams(o.context, o.ProductGetProductsByParamsHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"][""] = NewHello(o.context, o.HelloHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

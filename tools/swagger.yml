@@ -27,6 +27,16 @@ tags:
   description: Operations about share of basket with somebody
 
 paths:
+  /:
+    get:
+      summary: just hello
+      operationId: hello
+      responses:
+        200:
+          schema:
+            type: string
+          description: hello message
+  
   /user/login:
     get:
       tags:
@@ -211,7 +221,8 @@ paths:
           description: returns current state of goods
           schema:
             $ref: '#/definitions/Goods'
-
+        404:
+          description: product or basket not found
     get:
       summary: return all goods in basket
       operationId: getAllGoodsInBasket

@@ -34,6 +34,17 @@ release: build-docker build-image upload clean
 
 upload:
 	scp -r auchan.img root@159.69.121.222:/root/auchan
+	scp -r tools/docker-stack.yml root@159.69.121.222:/root/auchan/tools
+	scp -r tools/Makefile root@159.69.121.222:/root/auchan
+	ssh root@159.69.121.222 "cd auchan; ls"
+
+run-remote:
+	scp -r tools/docker-stack.yml root@159.69.121.222:/root/auchan/tools
+	scp -r Makefile root@159.69.121.222:/root/auchan
+	ssh root@159.69.121.222 "cd auchan; \
+		docker load -i auchan.img; \
+		make deploy-db \
+		"
 
 clean:
 	rm auchan auchan.img

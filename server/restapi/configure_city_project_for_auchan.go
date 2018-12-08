@@ -42,6 +42,7 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	//
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
+	api.HelloHandler = HelloHandler
 	api.GoodsAddGoodsToBasketHandler = GoodsAddGoodsToBasketHandler
 	api.ShareAddUserToShareHandler = ShareAddUserToShareHandler
 	api.BasketCreateBasketHandler = BasketCreateBasketHandler

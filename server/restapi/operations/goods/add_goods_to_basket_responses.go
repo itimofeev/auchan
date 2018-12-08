@@ -56,3 +56,27 @@ func (o *AddGoodsToBasketOK) WriteResponse(rw http.ResponseWriter, producer runt
 		}
 	}
 }
+
+// AddGoodsToBasketNotFoundCode is the HTTP code returned for type AddGoodsToBasketNotFound
+const AddGoodsToBasketNotFoundCode int = 404
+
+/*AddGoodsToBasketNotFound product or basket not found
+
+swagger:response addGoodsToBasketNotFound
+*/
+type AddGoodsToBasketNotFound struct {
+}
+
+// NewAddGoodsToBasketNotFound creates AddGoodsToBasketNotFound with default headers values
+func NewAddGoodsToBasketNotFound() *AddGoodsToBasketNotFound {
+
+	return &AddGoodsToBasketNotFound{}
+}
+
+// WriteResponse to the client
+func (o *AddGoodsToBasketNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(404)
+}

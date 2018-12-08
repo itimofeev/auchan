@@ -3,6 +3,7 @@ package restapi
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/itimofeev/auchan/server/models"
+	"github.com/itimofeev/auchan/server/restapi/operations"
 	"github.com/itimofeev/auchan/server/restapi/operations/basket"
 	"github.com/itimofeev/auchan/server/restapi/operations/goods"
 	"github.com/itimofeev/auchan/server/restapi/operations/product"
@@ -163,4 +164,8 @@ var GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params
 			ImageURL:   gds.Product.ImageURL,
 		},
 	})
+})
+
+var HelloHandler = operations.HelloHandlerFunc(func(params operations.HelloParams) middleware.Responder {
+	return operations.NewHelloOK().WithPayload("hi, there!")
 })

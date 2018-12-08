@@ -36,6 +36,20 @@ func init() {
   "host": "aeuchan.swagger.io",
   "basePath": "/v1",
   "paths": {
+    "/": {
+      "get": {
+        "summary": "just hello",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "hello message",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/basket": {
       "get": {
         "security": [
@@ -180,6 +194,9 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Goods"
             }
+          },
+          "404": {
+            "description": "product or basket not found"
           }
         }
       }
@@ -481,6 +498,20 @@ func init() {
   "host": "aeuchan.swagger.io",
   "basePath": "/v1",
   "paths": {
+    "/": {
+      "get": {
+        "summary": "just hello",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "hello message",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/basket": {
       "get": {
         "security": [
@@ -625,6 +656,9 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Goods"
             }
+          },
+          "404": {
+            "description": "product or basket not found"
           }
         }
       }

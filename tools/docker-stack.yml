@@ -20,7 +20,7 @@ services:
     image: auchan:latest
     ports:
       - "8000:8000"
-    command: /bin/auchan --port=8000
+    command: /bin/auchan --port=8000 --host=
 
 volumes:
   pg_data:
