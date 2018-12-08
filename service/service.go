@@ -48,6 +48,6 @@ func (s *Service) AddUserToShare(basket *store.Basket, email string) (share *sto
 	return s.store.AddUserToShare(basket, email)
 }
 
-func (s *Service) UpdateGoodsInBasket(basket *store.Basket, productId int64, quantity int64) (goods *store.Goods, err error) {
-	return s.store.UpdateGoodsInBasket(basket, productId, quantity)
+func (s *Service) UpdateGoodsInBasket(user *store.User, basket *store.Basket, productId int64, quantity int64) (goods *store.Goods, err error) {
+	return s.store.UpdateGoodsInBasket(user, basket, productId, quantity)
 }

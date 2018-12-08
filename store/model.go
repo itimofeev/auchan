@@ -34,6 +34,8 @@ type Product struct {
 type Goods struct {
 	ID        int64
 	BasketID  int64 `sql:",notnull"`
+	UserID    int64 `sql:",notnull"`
+	User      *User
 	Product   *Product
 	ProductID int64  `sql:",notnull"`
 	Completed bool   `sql:",notnull"`

@@ -4,6 +4,9 @@ SWAGGER_IMAGE=quay.io/goswagger/swagger:v0.17.2
 
 
 deploy-db:
+	docker stack deploy --compose-file tools/db.docker-stack.yml db
+
+deploy:
 	docker stack deploy --compose-file tools/docker-stack.yml db
 
 gen-server: download
@@ -27,8 +30,8 @@ download:
 rm:
 	docker service rm $(shell docker service ls -q) || true
 
-rm-full: rm rm-containers
-	docker volume rm db_pg_data
+rm-volume:
+	docker volume rm db_pg_data || true
 
 rm-containers:
 	docker rm $(shell docker ps -a -f status=exited -q) || true
@@ -46,7 +49,7 @@ run-remote:
 	ssh root@159.69.121.222 "cd auchan; \
 		docker load -i auchan.img; \
 		make rm; \
-		make deploy-db \
+		make deploy \
 		"
 
 clean:

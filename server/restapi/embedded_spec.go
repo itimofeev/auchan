@@ -406,6 +406,9 @@ func init() {
         },
         "unit": {
           "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
         }
       }
     },
@@ -867,6 +870,9 @@ func init() {
         },
         "unit": {
           "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
         }
       }
     },

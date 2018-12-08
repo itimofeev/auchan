@@ -33,6 +33,9 @@ type Goods struct {
 
 	// unit
 	Unit string `json:"unit,omitempty"`
+
+	// user
+	User *User `json:"user,omitempty"`
 }
 
 // Validate validates this goods
@@ -40,6 +43,10 @@ func (m *Goods) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateProduct(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateUser(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -59,6 +66,24 @@ func (m *Goods) validateProduct(formats strfmt.Registry) error {
 		if err := m.Product.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("product")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *Goods) validateUser(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.User) { // not required
+		return nil
+	}
+
+	if m.User != nil {
+		if err := m.User.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("user")
 			}
 			return err
 		}

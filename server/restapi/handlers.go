@@ -42,10 +42,7 @@ var UserGetCurrentUserHandler = user.GetCurrentUserHandlerFunc(func(params user.
 		return util.ConvertHTTPErrorToResponse(err)
 	}
 
-	return user.NewGetCurrentUserOK().WithPayload(&models.User{
-		ID:    usr.ID,
-		Email: usr.Email,
-	})
+	return user.NewGetCurrentUserOK().WithPayload(convertUser(usr))
 })
 
 var BasketCreateBasketHandler = basket.CreateBasketHandlerFunc(func(params basket.CreateBasketParams, principal interface{}) middleware.Responder {
@@ -54,10 +51,7 @@ var BasketCreateBasketHandler = basket.CreateBasketHandlerFunc(func(params baske
 	if err != nil {
 		return util.ConvertHTTPErrorToResponse(err)
 	}
-	return basket.NewCreateBasketOK().WithPayload(&models.Basket{
-		ID:   created.ID,
-		Name: created.Name,
-	})
+	return basket.NewCreateBasketOK().WithPayload(convertBasket(created))
 })
 
 var BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams, principal interface{}) middleware.Responder {
@@ -68,10 +62,7 @@ var BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params bas
 	}
 	bs := make([]*models.Basket, 0, len(b))
 	for _, bb := range b {
-		bs = append(bs, &models.Basket{
-			ID:   bb.ID,
-			Name: bb.Name,
-		})
+		bs = append(bs, convertBasket(bb))
 	}
 	return basket.NewGetAllBasketsOK().WithPayload(bs)
 })
@@ -84,12 +75,7 @@ var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(f
 
 	var resp = make([]*models.Product, 0, len(products))
 	for _, prod := range products {
-		resp = append(resp, &models.Product{
-			ID:           prod.ID,
-			Name:         prod.Name,
-			ImageURL:     prod.ImageURL,
-			CategoryName: prod.CategoryName,
-		})
+		resp = append(resp, convertProduct(prod))
 	}
 
 	return product.NewGetProductsByParamsOK().WithPayload(resp)
@@ -103,14 +89,7 @@ var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(
 
 	var resp = make([]*models.Goods, 0, len(ggoods))
 	for _, g := range ggoods {
-		resp = append(resp, &models.Goods{
-			ID:        g.ID,
-			Completed: g.Completed,
-			Product:   convertProduct(g.Product),
-			Price:     g.Price,
-			Quantity:  g.Quantity,
-			Unit:      g.Unit,
-		})
+		resp = append(resp, convertGoods(g))
 	}
 
 	return goods.NewGetAllGoodsInBasketOK().WithPayload(resp)
@@ -125,6 +104,32 @@ func convertProduct(g *store.Product) *models.Product {
 	}
 }
 
+func convertUser(g *store.User) *models.User {
+	return &models.User{
+		ID:    g.ID,
+		Email: g.Email,
+	}
+}
+
+func convertGoods(g *store.Goods) *models.Goods {
+	return &models.Goods{
+		ID:        g.ID,
+		Completed: g.Completed,
+		Product:   convertProduct(g.Product),
+		User:      convertUser(g.User),
+		Price:     g.Price,
+		Quantity:  g.Quantity,
+		Unit:      g.Unit,
+	}
+}
+
+func convertBasket(g *store.Basket) *models.Basket {
+	return &models.Basket{
+		ID:   g.ID,
+		Name: g.Name,
+	}
+}
+
 var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams, principal interface{}) middleware.Responder {
 	sshares, err := Service.GetSharesForBasket(&store.Basket{ID: params.BasketID})
 	if err != nil {
@@ -134,10 +139,7 @@ var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(f
 	var resp = make([]*models.Share, 0, len(sshares))
 	for _, g := range sshares {
 		resp = append(resp, &models.Share{
-			User: &models.User{
-				ID:    g.UserID,
-				Email: g.User.Email,
-			},
+			User: convertUser(g.User),
 		})
 	}
 	return share.NewGetAllSharesForBasketOK().WithPayload(resp)
@@ -149,25 +151,17 @@ var ShareAddUserToShareHandler = share.AddUserToShareHandlerFunc(func(params sha
 		return util.ConvertHTTPErrorToResponse(err)
 	}
 
-	return share.NewAddUserToShareOK().WithPayload(&models.Share{User: &models.User{
-		ID:    sh.User.ID,
-		Email: sh.User.Email,
-	}})
+	return share.NewAddUserToShareOK().WithPayload(&models.Share{User: convertUser(sh.User)})
 })
 
 var GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams, principal interface{}) middleware.Responder {
-	gds, err := Service.UpdateGoodsInBasket(&store.Basket{ID: params.BasketID}, params.Goods.ProductID, params.Goods.Quantity)
+	usr1 := principal.(*models.User)
+
+	gds, err := Service.UpdateGoodsInBasket(&store.User{ID: usr1.ID, Email: usr1.Email}, &store.Basket{ID: params.BasketID}, params.Goods.ProductID, params.Goods.Quantity)
 	if err != nil {
 		return util.ConvertHTTPErrorToResponse(err)
 	}
-	return goods.NewAddGoodsToBasketOK().WithPayload(&models.Goods{
-		ID:        gds.ID,
-		Quantity:  gds.Quantity,
-		Completed: false,
-		Unit:      gds.Unit,
-		Price:     gds.Price,
-		Product:   convertProduct(gds.Product),
-	})
+	return goods.NewAddGoodsToBasketOK().WithPayload(convertGoods(gds))
 })
 
 var HelloHandler = operations.HelloHandlerFunc(func(params operations.HelloParams) middleware.Responder {
