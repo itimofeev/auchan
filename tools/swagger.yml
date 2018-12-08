@@ -271,9 +271,8 @@ definitions:
         type: string
       imageUrl:
         type: string  
-      category_id:
-        type: integer
-        format: int64
+      categoryName:
+        type: string
 
   Basket:
     type: object

@@ -22,10 +22,13 @@ type Share struct {
 }
 
 type Product struct {
-	ID         int64
-	Name       string `sql:",notnull"`
-	ImageURL   string `sql:",notnull"`
-	CategoryID int64  `sql:",notnull"`
+	ID           int64
+	AuchanID     int64
+	Name         string `sql:",notnull"`
+	ImageURL     string `sql:",notnull"`
+	CategoryName string `sql:",notnull"`
+	Link         string
+	Price        float64
 }
 
 type Goods struct {

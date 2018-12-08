@@ -412,9 +412,8 @@ func init() {
     "Product": {
       "type": "object",
       "properties": {
-        "category_id": {
-          "type": "integer",
-          "format": "int64"
+        "categoryName": {
+          "type": "string"
         },
         "id": {
           "type": "integer",
@@ -874,9 +873,8 @@ func init() {
     "Product": {
       "type": "object",
       "properties": {
-        "category_id": {
-          "type": "integer",
-          "format": "int64"
+        "categoryName": {
+          "type": "string"
         },
         "id": {
           "type": "integer",

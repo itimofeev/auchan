@@ -85,10 +85,10 @@ var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(f
 	var resp = make([]*models.Product, 0, len(products))
 	for _, prod := range products {
 		resp = append(resp, &models.Product{
-			ID:         prod.ID,
-			Name:       prod.Name,
-			ImageURL:   prod.ImageURL,
-			CategoryID: prod.CategoryID,
+			ID:           prod.ID,
+			Name:         prod.Name,
+			ImageURL:     prod.ImageURL,
+			CategoryName: prod.CategoryName,
 		})
 	}
 
@@ -118,10 +118,10 @@ var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(
 
 func convertProduct(g *store.Product) *models.Product {
 	return &models.Product{
-		ID:         g.ID,
-		Name:       g.Name,
-		CategoryID: g.CategoryID,
-		ImageURL:   g.ImageURL,
+		ID:           g.ID,
+		Name:         g.Name,
+		CategoryName: g.CategoryName,
+		ImageURL:     g.ImageURL,
 	}
 }
 
