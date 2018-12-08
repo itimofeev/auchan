@@ -27,6 +27,9 @@ download:
 rm:
 	docker service rm $(shell docker service ls -q) || true
 
+rm-full: rm rm-containers
+	docker volume rm db_pg_data
+
 rm-containers:
 	docker rm $(shell docker ps -a -f status=exited -q)
 
