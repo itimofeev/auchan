@@ -7,10 +7,20 @@ services:
     ports:
       - "5432:5432"
     environment:
+      # - POSTGRES_USER=habrdockerarticle
+      # - POSTGRES_DB=habrdockerarticle
+      # - POSTGRES_PASSWORD=qwerty
+      # - POSTGRES_HOST=postgresql
+      # - POSTGRES_PORT=5432
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - pg_data:/var/lib/postgresql/data/pgdata
 
+  auchan:
+    image: auchan:latest
+    ports:
+      - "8000:8000"
+    command: /bin/auchan --port=8000
 
 volumes:
   pg_data:

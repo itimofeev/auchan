@@ -29,3 +29,29 @@ rm:
 
 rm-containers:
 	docker rm $(shell docker ps -a -f status=exited -q)
+
+release: build-docker build-image upload clean
+
+upload:
+	scp -r auchan.img root@159.69.121.222:/root/auchan
+
+clean:
+	rm auchan auchan.img
+
+build-docker:
+	docker run \
+		-v $$GOPATH:/go \
+		-w /go/src/github.com/itimofeev/auchan \
+		-t $(GO_IMAGE) \
+		make build
+	docker cp `docker ps -q -n=1`:/go/bin/linux_amd64/auchan ./
+
+build-image:
+	docker build  \
+		--force-rm=true \
+		-t auchan \
+		-f tools/auchan.Dockerfile `pwd`
+	docker image save auchan -o auchan.img
+
+build:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o $$GOPATH/bin/linux_amd64/auchan github.com/itimofeev/auchan/server/cmd/city-project-for-auchan-server
