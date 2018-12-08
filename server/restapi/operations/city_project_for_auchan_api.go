@@ -398,7 +398,7 @@ func (o *CityProjectForAuchanAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"][""] = NewHello(o.context, o.HelloHandler)
+	o.handlers["GET"]["/hello"] = NewHello(o.context, o.HelloHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

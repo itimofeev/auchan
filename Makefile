@@ -30,19 +30,18 @@ rm:
 rm-containers:
 	docker rm $(shell docker ps -a -f status=exited -q)
 
-release: build-docker build-image upload clean
+release: build-docker build-image upload clean run-remote
 
 upload:
 	scp -r auchan.img root@159.69.121.222:/root/auchan
 	scp -r tools/docker-stack.yml root@159.69.121.222:/root/auchan/tools
-	scp -r tools/Makefile root@159.69.121.222:/root/auchan
+	scp -r Makefile root@159.69.121.222:/root/auchan
 	ssh root@159.69.121.222 "cd auchan; ls"
 
 run-remote:
-	scp -r tools/docker-stack.yml root@159.69.121.222:/root/auchan/tools
-	scp -r Makefile root@159.69.121.222:/root/auchan
 	ssh root@159.69.121.222 "cd auchan; \
 		docker load -i auchan.img; \
+		make rm; \
 		make deploy-db \
 		"
 

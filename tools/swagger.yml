@@ -27,7 +27,7 @@ tags:
   description: Operations about share of basket with somebody
 
 paths:
-  /:
+  /hello:
     get:
       summary: just hello
       operationId: hello

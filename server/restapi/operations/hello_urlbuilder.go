@@ -35,7 +35,7 @@ func (o *HelloURL) SetBasePath(bp string) {
 func (o *HelloURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/"
+	var _path = "/hello"
 
 	_basePath := o._basePath
 	if _basePath == "" {

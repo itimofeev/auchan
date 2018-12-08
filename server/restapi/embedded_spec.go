@@ -36,20 +36,6 @@ func init() {
   "host": "aeuchan.swagger.io",
   "basePath": "/v1",
   "paths": {
-    "/": {
-      "get": {
-        "summary": "just hello",
-        "operationId": "hello",
-        "responses": {
-          "200": {
-            "description": "hello message",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
     "/basket": {
       "get": {
         "security": [
@@ -274,6 +260,20 @@ func init() {
             "description": "returns created share",
             "schema": {
               "$ref": "#/definitions/Share"
+            }
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "summary": "just hello",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "hello message",
+            "schema": {
+              "type": "string"
             }
           }
         }
@@ -498,20 +498,6 @@ func init() {
   "host": "aeuchan.swagger.io",
   "basePath": "/v1",
   "paths": {
-    "/": {
-      "get": {
-        "summary": "just hello",
-        "operationId": "hello",
-        "responses": {
-          "200": {
-            "description": "hello message",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
     "/basket": {
       "get": {
         "security": [
@@ -736,6 +722,20 @@ func init() {
             "description": "returns created share",
             "schema": {
               "$ref": "#/definitions/Share"
+            }
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "summary": "just hello",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "hello message",
+            "schema": {
+              "type": "string"
             }
           }
         }

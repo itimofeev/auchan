@@ -29,7 +29,7 @@ func NewHello(ctx *middleware.Context, handler HelloHandler) *Hello {
 	return &Hello{Context: ctx, Handler: handler}
 }
 
-/*Hello swagger:route GET / hello
+/*Hello swagger:route GET /hello hello
 
 just hello
 
