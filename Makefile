@@ -31,7 +31,7 @@ rm-full: rm rm-containers
 	docker volume rm db_pg_data
 
 rm-containers:
-	docker rm $(shell docker ps -a -f status=exited -q)
+	docker rm $(shell docker ps -a -f status=exited -q) || true
 
 release: build-docker build-image upload clean run-remote
 
@@ -68,7 +68,7 @@ build-image:
 	docker image save auchan -o auchan.img
 
 import-products:
-	docker cp cmd.sql `docker ps -q -f name=db_db`:/cmd.sql \
+	docker cp tools/cmd.sql `docker ps -q -f name=db_db`:/cmd.sql \
 		&& docker exec `docker ps -q -f name=db_db` psql postgres postgres -f /cmd.sql
 
 build:

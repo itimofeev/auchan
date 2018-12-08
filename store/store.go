@@ -33,18 +33,6 @@ func NewStore(connectURL string) *Store {
 	store.CreateUser("user1@gmail.com", "123")
 	store.CreateUser("user2@gmail.com", "123")
 
-	store.db.Insert(&Product{
-		Name:         "product1",
-		CategoryName: "Книги",
-		ImageURL:     "https://images3.alphacoders.com/258/thumb-1920-258059.jpg",
-	})
-
-	store.db.Insert(&Product{
-		Name:         "profit2",
-		CategoryName: "овощи",
-		ImageURL:     "http://www.petsworld.in/blog/wp-content/uploads/2014/09/cute-kittens.jpg",
-	})
-
 	return store
 }
 
