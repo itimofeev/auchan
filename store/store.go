@@ -36,13 +36,13 @@ func NewStore(connectURL string) *Store {
 	store.db.Insert(&Product{
 		Name:       "product1",
 		CategoryID: 10,
-		ImageURL:   "http://google.com",
+		ImageURL:   "https://images3.alphacoders.com/258/thumb-1920-258059.jpg",
 	})
 
 	store.db.Insert(&Product{
 		Name:       "profit2",
 		CategoryID: 20,
-		ImageURL:   "http://google.com",
+		ImageURL:   "http://www.petsworld.in/blog/wp-content/uploads/2014/09/cute-kittens.jpg",
 	})
 
 	return store
