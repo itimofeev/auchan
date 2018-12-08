@@ -11,6 +11,7 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
@@ -35,7 +36,7 @@ type AddUserToShareParams struct {
 	  Required: true
 	  In: path
 	*/
-	BasketID string
+	BasketID int64
 	/*
 	  In: body
 	*/
@@ -88,7 +89,11 @@ func (o *AddUserToShareParams) bindBasketID(rawData []string, hasKey bool, forma
 	// Required: true
 	// Parameter is provided by construction from the route
 
-	o.BasketID = raw
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("basketId", "path", "int64", raw)
+	}
+	o.BasketID = value
 
 	return nil
 }

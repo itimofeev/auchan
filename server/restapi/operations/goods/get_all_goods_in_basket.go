@@ -12,16 +12,16 @@ import (
 )
 
 // GetAllGoodsInBasketHandlerFunc turns a function with the right signature into a get all goods in basket handler
-type GetAllGoodsInBasketHandlerFunc func(GetAllGoodsInBasketParams) middleware.Responder
+type GetAllGoodsInBasketHandlerFunc func(GetAllGoodsInBasketParams, interface{}) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetAllGoodsInBasketHandlerFunc) Handle(params GetAllGoodsInBasketParams) middleware.Responder {
-	return fn(params)
+func (fn GetAllGoodsInBasketHandlerFunc) Handle(params GetAllGoodsInBasketParams, principal interface{}) middleware.Responder {
+	return fn(params, principal)
 }
 
 // GetAllGoodsInBasketHandler interface for that can handle valid get all goods in basket params
 type GetAllGoodsInBasketHandler interface {
-	Handle(GetAllGoodsInBasketParams) middleware.Responder
+	Handle(GetAllGoodsInBasketParams, interface{}) middleware.Responder
 }
 
 // NewGetAllGoodsInBasket creates a new http.Handler for the get all goods in basket operation
@@ -46,12 +46,25 @@ func (o *GetAllGoodsInBasket) ServeHTTP(rw http.ResponseWriter, r *http.Request)
 	}
 	var Params = NewGetAllGoodsInBasketParams()
 
+	uprinc, aCtx, err := o.Context.Authorize(r, route)
+	if err != nil {
+		o.Context.Respond(rw, r, route.Produces, route, err)
+		return
+	}
+	if aCtx != nil {
+		r = aCtx
+	}
+	var principal interface{}
+	if uprinc != nil {
+		principal = uprinc
+	}
+
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params
 		o.Context.Respond(rw, r, route.Produces, route, err)
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	res := o.Handler.Handle(Params, principal) // actually handle the request
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
 

@@ -43,10 +43,10 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		GoodsAddGoodsToBasketHandler: goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams) middleware.Responder {
+		GoodsAddGoodsToBasketHandler: goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation GoodsAddGoodsToBasket has not yet been implemented")
 		}),
-		ShareAddUserToShareHandler: share.AddUserToShareHandlerFunc(func(params share.AddUserToShareParams) middleware.Responder {
+		ShareAddUserToShareHandler: share.AddUserToShareHandlerFunc(func(params share.AddUserToShareParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation ShareAddUserToShare has not yet been implemented")
 		}),
 		BasketCreateBasketHandler: basket.CreateBasketHandlerFunc(func(params basket.CreateBasketParams, principal interface{}) middleware.Responder {
@@ -55,10 +55,10 @@ func NewCityProjectForAuchanAPI(spec *loads.Document) *CityProjectForAuchanAPI {
 		BasketGetAllBasketsHandler: basket.GetAllBasketsHandlerFunc(func(params basket.GetAllBasketsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation BasketGetAllBaskets has not yet been implemented")
 		}),
-		GoodsGetAllGoodsInBasketHandler: goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
+		GoodsGetAllGoodsInBasketHandler: goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation GoodsGetAllGoodsInBasket has not yet been implemented")
 		}),
-		ShareGetAllSharesForBasketHandler: share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
+		ShareGetAllSharesForBasketHandler: share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation ShareGetAllSharesForBasket has not yet been implemented")
 		}),
 		UserGetCurrentUserHandler: user.GetCurrentUserHandlerFunc(func(params user.GetCurrentUserParams, principal interface{}) middleware.Responder {
@@ -351,10 +351,10 @@ func (o *CityProjectForAuchanAPI) initHandlerCache() {
 	}
 	o.handlers["POST"]["/basket/{basketId}/goods"] = goods.NewAddGoodsToBasket(o.context, o.GoodsAddGoodsToBasketHandler)
 
-	if o.handlers["PUT"] == nil {
-		o.handlers["PUT"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["PUT"]["/basket/{basketId}/share"] = share.NewAddUserToShare(o.context, o.ShareAddUserToShareHandler)
+	o.handlers["POST"]["/basket/{basketId}/share"] = share.NewAddUserToShare(o.context, o.ShareAddUserToShareHandler)
 
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)

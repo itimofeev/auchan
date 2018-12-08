@@ -6,7 +6,7 @@ SWAGGER_IMAGE=quay.io/goswagger/swagger:v0.17.2
 deploy-db:
 	docker stack deploy --compose-file tools/docker-stack.yml db
 
-gen-server:
+gen-server: download
 	docker run --rm -v $(GOPATH):/go/ -w /go/src/github.com/itimofeev/auchan -t $(SWAGGER_IMAGE) \
 		generate server \
 		--target=server \

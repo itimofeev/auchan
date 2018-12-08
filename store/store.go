@@ -25,6 +25,9 @@ func NewStore(connectURL string) *Store {
 		db: db,
 	}
 
+	db.Exec(`ALTER TABLE shares
+  ADD CONSTRAINT shares_unique UNIQUE (user_id, basket_id)`)
+
 	store.CreateUser("user1@gmail.com", "123")
 	store.CreateUser("user2@gmail.com", "123")
 
@@ -130,5 +133,20 @@ func (s *Store) GetGoodsForBasket(basket *Basket) (goods []*Goods, err error) {
 }
 
 func (s *Store) GetSharesForBasket(basket *Basket) (shares []*Share, err error) {
-	return shares, s.db.Model(&shares).Where("basket_id = ?", basket.ID).Select()
+	return shares, s.db.Model(&shares).Relation("User").Where("basket_id = ?", basket.ID).Select()
+}
+
+func (s *Store) AddUserToShare(basket *Basket, email string) (share *Share, err error) {
+	user := &User{}
+	err = s.db.Model(user).Where("email = ? ", email).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	sh := &Share{
+		UserID:   user.ID,
+		User:     user,
+		BasketID: basket.ID,
+	}
+	return sh, s.db.Insert(sh)
 }

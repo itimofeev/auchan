@@ -12,7 +12,6 @@ import (
 
 	"github.com/itimofeev/auchan/server/restapi/operations"
 	"github.com/itimofeev/auchan/server/restapi/operations/goods"
-	"github.com/itimofeev/auchan/server/restapi/operations/share"
 )
 
 //go:generate swagger generate server --target ../server --name CityProjectForAuchan --spec ../tools/swagger.yml
@@ -43,12 +42,10 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	//
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
-	api.GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams) middleware.Responder {
+	api.GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams, principal interface{}) middleware.Responder {
 		return middleware.NotImplemented("operation goods.AddGoodsToBasket has not yet been implemented")
 	})
-	api.ShareAddUserToShareHandler = share.AddUserToShareHandlerFunc(func(params share.AddUserToShareParams) middleware.Responder {
-		return middleware.NotImplemented("operation share.AddUserToShare has not yet been implemented")
-	})
+	api.ShareAddUserToShareHandler = ShareAddUserToShareHandler
 	api.BasketCreateBasketHandler = BasketCreateBasketHandler
 	api.BasketGetAllBasketsHandler = BasketGetAllBasketsHandler
 	api.GoodsGetAllGoodsInBasketHandler = GoodsGetAllGoodsInBasketHandler

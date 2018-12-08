@@ -103,6 +103,11 @@ func init() {
     },
     "/basket/{basketId}/goods": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "goods"
         ],
@@ -130,6 +135,11 @@ func init() {
         }
       },
       "post": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "goods"
         ],
@@ -173,6 +183,11 @@ func init() {
     },
     "/basket/{basketId}/share": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "share"
         ],
@@ -199,7 +214,12 @@ func init() {
           }
         }
       },
-      "put": {
+      "post": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "share"
         ],
@@ -207,7 +227,8 @@ func init() {
         "operationId": "addUserToShare",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -218,10 +239,10 @@ func init() {
             "schema": {
               "type": "object",
               "required": [
-                "name"
+                "email"
               ],
               "properties": {
-                "name": {
+                "email": {
                   "type": "string"
                 }
               }
@@ -524,6 +545,11 @@ func init() {
     },
     "/basket/{basketId}/goods": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "goods"
         ],
@@ -551,6 +577,11 @@ func init() {
         }
       },
       "post": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "goods"
         ],
@@ -594,6 +625,11 @@ func init() {
     },
     "/basket/{basketId}/share": {
       "get": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "share"
         ],
@@ -620,7 +656,12 @@ func init() {
           }
         }
       },
-      "put": {
+      "post": {
+        "security": [
+          {
+            "AuthToken": []
+          }
+        ],
         "tags": [
           "share"
         ],
@@ -628,7 +669,8 @@ func init() {
         "operationId": "addUserToShare",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -639,10 +681,10 @@ func init() {
             "schema": {
               "type": "object",
               "required": [
-                "name"
+                "email"
               ],
               "properties": {
-                "name": {
+                "email": {
                   "type": "string"
                 }
               }

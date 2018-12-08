@@ -17,6 +17,7 @@ type Basket struct {
 
 type Share struct {
 	UserID   int64 `pg:",notnull"`
+	User     *User
 	BasketID int64 `pg:",notnull"`
 }
 

@@ -94,7 +94,7 @@ var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(f
 	return product.NewGetProductsByParamsOK().WithPayload(resp)
 })
 
-var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams) middleware.Responder {
+var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(params goods.GetAllGoodsInBasketParams, principal interface{}) middleware.Responder {
 	ggoods, err := Service.GetGoodsForBasket(&store.Basket{ID: params.BasketID})
 	if err != nil {
 		return util.ConvertHTTPErrorToResponse(err)
@@ -115,7 +115,7 @@ var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(
 	return goods.NewGetAllGoodsInBasketOK().WithPayload(resp)
 })
 
-var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams) middleware.Responder {
+var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams, principal interface{}) middleware.Responder {
 	sshares, err := Service.GetSharesForBasket(&store.Basket{ID: params.BasketID})
 	if err != nil {
 		return util.ConvertHTTPErrorToResponse(err)
@@ -126,9 +126,21 @@ var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(f
 		resp = append(resp, &models.Share{
 			User: &models.User{
 				ID:    g.UserID,
-				Email: "TODO",
+				Email: g.User.Email,
 			},
 		})
 	}
 	return share.NewGetAllSharesForBasketOK().WithPayload(resp)
+})
+
+var ShareAddUserToShareHandler = share.AddUserToShareHandlerFunc(func(params share.AddUserToShareParams, principal interface{}) middleware.Responder {
+	sh, err := Service.AddUserToShare(&store.Basket{ID: params.BasketID}, *params.Share.Email)
+	if err != nil {
+		return util.ConvertHTTPErrorToResponse(err)
+	}
+
+	return share.NewAddUserToShareOK().WithPayload(&models.Share{User: &models.User{
+		ID:    sh.User.ID,
+		Email: sh.User.Email,
+	}})
 })

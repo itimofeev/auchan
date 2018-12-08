@@ -12,16 +12,16 @@ import (
 )
 
 // GetAllSharesForBasketHandlerFunc turns a function with the right signature into a get all shares for basket handler
-type GetAllSharesForBasketHandlerFunc func(GetAllSharesForBasketParams) middleware.Responder
+type GetAllSharesForBasketHandlerFunc func(GetAllSharesForBasketParams, interface{}) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetAllSharesForBasketHandlerFunc) Handle(params GetAllSharesForBasketParams) middleware.Responder {
-	return fn(params)
+func (fn GetAllSharesForBasketHandlerFunc) Handle(params GetAllSharesForBasketParams, principal interface{}) middleware.Responder {
+	return fn(params, principal)
 }
 
 // GetAllSharesForBasketHandler interface for that can handle valid get all shares for basket params
 type GetAllSharesForBasketHandler interface {
-	Handle(GetAllSharesForBasketParams) middleware.Responder
+	Handle(GetAllSharesForBasketParams, interface{}) middleware.Responder
 }
 
 // NewGetAllSharesForBasket creates a new http.Handler for the get all shares for basket operation
@@ -46,12 +46,25 @@ func (o *GetAllSharesForBasket) ServeHTTP(rw http.ResponseWriter, r *http.Reques
 	}
 	var Params = NewGetAllSharesForBasketParams()
 
+	uprinc, aCtx, err := o.Context.Authorize(r, route)
+	if err != nil {
+		o.Context.Respond(rw, r, route.Produces, route, err)
+		return
+	}
+	if aCtx != nil {
+		r = aCtx
+	}
+	var principal interface{}
+	if uprinc != nil {
+		principal = uprinc
+	}
+
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params
 		o.Context.Respond(rw, r, route.Produces, route, err)
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	res := o.Handler.Handle(Params, principal) // actually handle the request
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
 

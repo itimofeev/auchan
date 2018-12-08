@@ -130,14 +130,17 @@ paths:
               $ref: '#/definitions/Basket'
   
   /basket/{basketId}/share:
-    put:
+    post:
       tags:
       - share
+      security:
+        - AuthToken: []      
       summary: add user to share
       operationId: addUserToShare
       parameters:
       - name: "basketId"
-        type: "string"
+        type: integer
+        format: int64
         in: "path"
         required: true
       - name: "share"
@@ -145,9 +148,9 @@ paths:
         schema:
           type: object
           required:
-            - name
+            - email
           properties:
-            name: 
+            email: 
               type: string
       responses:
         200:
@@ -158,6 +161,8 @@ paths:
     get:
       tags:
       - share
+      security:
+        - AuthToken: []      
       summary: get all shares for basket
       operationId: getAllSharesForBasket
       parameters:
@@ -179,7 +184,9 @@ paths:
       summary: change goods quantity in basket
       operationId: addGoodsToBasket
       tags: 
-      - goods      
+      - goods    
+      security:
+        - AuthToken: []
       parameters:
       - name: "basketId"
         type: "string"
@@ -207,6 +214,8 @@ paths:
       operationId: getAllGoodsInBasket
       tags: 
       - goods
+      security:
+        - AuthToken: []      
       parameters:
       - name: basketId
         type: integer
