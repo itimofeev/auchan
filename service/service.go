@@ -32,7 +32,7 @@ func (s *Service) GetUserBaskets(user *store.User) (baskets []*store.Basket, err
 	return s.store.GetUserBaskets(user)
 }
 
-func (s *Service) SearchProducts(title string) (products []*store.Product, err error) {
+func (s *Service) SearchProducts(title *string) (products []*store.Product, err error) {
 	return s.store.SearchProducts(title)
 }
 

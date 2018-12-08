@@ -77,7 +77,7 @@ var BasketGetAllBasketsHandler = basket.GetAllBasketsHandlerFunc(func(params bas
 })
 
 var ProductGetProductsByParamsHandler = product.GetProductsByParamsHandlerFunc(func(params product.GetProductsByParamsParams) middleware.Responder {
-	products, err := Service.SearchProducts(*params.Name)
+	products, err := Service.SearchProducts(params.Name)
 	if err != nil {
 		return util.ConvertHTTPErrorToResponse(err)
 	}
@@ -106,7 +106,7 @@ var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(
 		resp = append(resp, &models.Goods{
 			ID:        g.ID,
 			Completed: g.Completed,
-			Product:   nil,
+			Product:   convertProduct(g.Product),
 			Price:     g.Price,
 			Quantity:  g.Quantity,
 			Unit:      g.Unit,
@@ -115,6 +115,15 @@ var GoodsGetAllGoodsInBasketHandler = goods.GetAllGoodsInBasketHandlerFunc(func(
 
 	return goods.NewGetAllGoodsInBasketOK().WithPayload(resp)
 })
+
+func convertProduct(g *store.Product) *models.Product {
+	return &models.Product{
+		ID:         g.ID,
+		Name:       g.Name,
+		CategoryID: g.CategoryID,
+		ImageURL:   g.ImageURL,
+	}
+}
 
 var ShareGetAllSharesForBasketHandler = share.GetAllSharesForBasketHandlerFunc(func(params share.GetAllSharesForBasketParams, principal interface{}) middleware.Responder {
 	sshares, err := Service.GetSharesForBasket(&store.Basket{ID: params.BasketID})
@@ -157,12 +166,7 @@ var GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params
 		Completed: false,
 		Unit:      gds.Unit,
 		Price:     gds.Price,
-		Product: &models.Product{
-			ID:         gds.Product.ID,
-			Name:       gds.Product.Name,
-			CategoryID: gds.Product.CategoryID,
-			ImageURL:   gds.Product.ImageURL,
-		},
+		Product:   convertProduct(gds.Product),
 	})
 })
 
