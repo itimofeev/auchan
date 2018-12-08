@@ -27,6 +27,8 @@ func NewStore(connectURL string) *Store {
 
 	db.Exec(`ALTER TABLE shares
   ADD CONSTRAINT shares_unique UNIQUE (user_id, basket_id)`)
+	db.Exec(`ALTER TABLE goods
+  ADD CONSTRAINT goods_unique UNIQUE (basket_id, goods_id)`)
 
 	store.CreateUser("user1@gmail.com", "123")
 	store.CreateUser("user2@gmail.com", "123")
@@ -149,4 +151,41 @@ func (s *Store) AddUserToShare(basket *Basket, email string) (share *Share, err 
 		BasketID: basket.ID,
 	}
 	return sh, s.db.Insert(sh)
+}
+
+func (s *Store) UpdateGoodsInBasket(basket *Basket, productId, quantity int64) (goods *Goods, err error) {
+	goods = &Goods{ProductID: productId, BasketID: basket.ID}
+
+	return goods, s.db.RunInTransaction(func(tx *pg.Tx) error {
+		product := &Product{ID: productId}
+		err = s.db.Model(product).Where("id = ?", productId).Select()
+		if err != nil {
+			return err
+		}
+
+		goods.Product = product
+
+		if quantity <= 0 {
+			_, err := s.db.Model(goods).Where("basket_id = ? AND product_id = ?", basket.ID, productId).Delete()
+			return err
+		}
+
+		exists := true
+		err = s.db.Model(goods).Where("basket_id = ? AND product_id = ?", basket.ID, productId).Select()
+		if err == pg.ErrNoRows {
+			err = nil
+			exists = false
+		}
+		if err != nil {
+			return err
+		}
+
+		goods.Quantity = quantity
+
+		if exists {
+			return s.db.Update(goods)
+		}
+
+		return s.db.Insert(goods)
+	})
 }

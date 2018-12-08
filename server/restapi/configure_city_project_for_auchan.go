@@ -8,10 +8,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/itimofeev/auchan/server/restapi/operations"
-	"github.com/itimofeev/auchan/server/restapi/operations/goods"
 )
 
 //go:generate swagger generate server --target ../server --name CityProjectForAuchan --spec ../tools/swagger.yml
@@ -42,9 +40,7 @@ func configureAPI(api *operations.CityProjectForAuchanAPI) http.Handler {
 	//
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
-	api.GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams, principal interface{}) middleware.Responder {
-		return middleware.NotImplemented("operation goods.AddGoodsToBasket has not yet been implemented")
-	})
+	api.GoodsAddGoodsToBasketHandler = GoodsAddGoodsToBasketHandler
 	api.ShareAddUserToShareHandler = ShareAddUserToShareHandler
 	api.BasketCreateBasketHandler = BasketCreateBasketHandler
 	api.BasketGetAllBasketsHandler = BasketGetAllBasketsHandler

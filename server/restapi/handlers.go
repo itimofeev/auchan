@@ -144,3 +144,23 @@ var ShareAddUserToShareHandler = share.AddUserToShareHandlerFunc(func(params sha
 		Email: sh.User.Email,
 	}})
 })
+
+var GoodsAddGoodsToBasketHandler = goods.AddGoodsToBasketHandlerFunc(func(params goods.AddGoodsToBasketParams, principal interface{}) middleware.Responder {
+	gds, err := Service.UpdateGoodsInBasket(&store.Basket{ID: params.BasketID}, params.Goods.ProductID, params.Goods.Quantity)
+	if err != nil {
+		return util.ConvertHTTPErrorToResponse(err)
+	}
+	return goods.NewAddGoodsToBasketOK().WithPayload(&models.Goods{
+		ID:        gds.ID,
+		Quantity:  gds.Quantity,
+		Completed: false,
+		Unit:      gds.Unit,
+		Price:     gds.Price,
+		Product: &models.Product{
+			ID:         gds.Product.ID,
+			Name:       gds.Product.Name,
+			CategoryID: gds.Product.CategoryID,
+			ImageURL:   gds.Product.ImageURL,
+		},
+	})
+})

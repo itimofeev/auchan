@@ -188,21 +188,24 @@ paths:
       security:
         - AuthToken: []
       parameters:
-      - name: "basketId"
-        type: "string"
-        in: "path"
+      - name: basketId
+        type: integer
+        format: int64
+        in: path
         required: true
-      - name: "goods"
-        in: "body"
+      - name: goods
+        in: body
         schema:
           type: object
           required:
             - name
           properties:
             productId: 
-              type: string
+              type: integer
+              format: int64
             quantity:
               type: integer
+              format: int64
       responses:
         200:
           description: returns current state of goods

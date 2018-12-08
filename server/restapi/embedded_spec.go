@@ -147,7 +147,8 @@ func init() {
         "operationId": "addGoodsToBasket",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -162,10 +163,12 @@ func init() {
               ],
               "properties": {
                 "productId": {
-                  "type": "string"
+                  "type": "integer",
+                  "format": "int64"
                 },
                 "quantity": {
-                  "type": "integer"
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -589,7 +592,8 @@ func init() {
         "operationId": "addGoodsToBasket",
         "parameters": [
           {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "name": "basketId",
             "in": "path",
             "required": true
@@ -604,10 +608,12 @@ func init() {
               ],
               "properties": {
                 "productId": {
-                  "type": "string"
+                  "type": "integer",
+                  "format": "int64"
                 },
                 "quantity": {
-                  "type": "integer"
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }

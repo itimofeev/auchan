@@ -77,7 +77,7 @@ func (o *AddGoodsToBasket) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 type AddGoodsToBasketBody struct {
 
 	// product Id
-	ProductID string `json:"productId,omitempty"`
+	ProductID int64 `json:"productId,omitempty"`
 
 	// quantity
 	Quantity int64 `json:"quantity,omitempty"`

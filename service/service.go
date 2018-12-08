@@ -47,3 +47,7 @@ func (s *Service) GetSharesForBasket(basket *store.Basket) (shares []*store.Shar
 func (s *Service) AddUserToShare(basket *store.Basket, email string) (share *store.Share, err error) {
 	return s.store.AddUserToShare(basket, email)
 }
+
+func (s *Service) UpdateGoodsInBasket(basket *store.Basket, productId int64, quantity int64) (goods *store.Goods, err error) {
+	return s.store.UpdateGoodsInBasket(basket, productId, quantity)
+}

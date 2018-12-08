@@ -1,6 +1,7 @@
 package util
 
 import (
+	"github.com/go-pg/pg"
 	"net/http"
 	"runtime/debug"
 	"strings"
@@ -75,8 +76,11 @@ func NewServerError(key, description string) *HTTPError {
 func ConvertHTTPErrorToResponse(err error) middleware.Responder {
 	if httpError, ok := err.(*HTTPError); ok {
 		return httpError
-
 	}
+	if err == pg.ErrNoRows {
+		return NewNotFoundError("not found", "")
+	}
+
 	return NewServerError("internal.server.error", err.Error())
 }
 
