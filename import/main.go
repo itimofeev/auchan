@@ -7,6 +7,7 @@ import (
 	"github.com/itimofeev/auchan/util"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Prod struct {
@@ -48,6 +49,9 @@ func main() {
 			continue
 		}
 
+		r[1] = strings.Replace(r[1], "'", "''", -1)
+		r[4] = strings.Replace(r[4], "'", "''", -1)
+
 		p := Prod{
 			ID:           int64(id),
 			CategoryName: r[1],
@@ -58,10 +62,9 @@ func main() {
 			Link:         r[11],
 		}
 
-		_, err = w.WriteString(fmt.Sprintf("INSERT INTO product("+
-			"name, auchan_id, image_url, category_name, link, price) VALUE ("+
-			"%s, %d, %s, %s, %s, %f)/n", p.Title, p.ID, "https://images3.alphacoders.com/258/thumb-1920-258059.jpg", p.CategoryName, p.Link, p.Price))
-
+		_, err = w.WriteString(fmt.Sprintf("INSERT INTO products ("+
+			"name, auchan_id, image_url, category_name, link, price) VALUES ("+
+			"'%s', %d, '%s', '%s', '%s', %f);\n", p.Title, p.ID, "https://images3.alphacoders.com/258/thumb-1920-258059.jpg", p.CategoryName, p.Link, p.Price))
 		util.CheckErr(err, "write")
 	}
 

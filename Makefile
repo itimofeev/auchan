@@ -35,6 +35,7 @@ release: build-docker build-image upload clean run-remote
 upload:
 	scp -r auchan.img root@159.69.121.222:/root/auchan
 	scp -r tools/docker-stack.yml root@159.69.121.222:/root/auchan/tools
+	scp -r tools/cmd.sql root@159.69.121.222:/root/auchan/tools
 	scp -r Makefile root@159.69.121.222:/root/auchan
 	ssh root@159.69.121.222 "cd auchan; ls"
 
@@ -62,6 +63,10 @@ build-image:
 		-t auchan \
 		-f tools/auchan.Dockerfile `pwd`
 	docker image save auchan -o auchan.img
+
+import-products:
+	docker cp cmd.sql `docker ps -q -f name=db_db`:/cmd.sql \
+		&& docker exec `docker ps -q -f name=db_db` psql postgres postgres -f /cmd.sql
 
 build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o $$GOPATH/bin/linux_amd64/auchan github.com/itimofeev/auchan/server/cmd/city-project-for-auchan-server

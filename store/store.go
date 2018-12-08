@@ -132,7 +132,7 @@ func (s *Store) SearchProducts(name *string) (products []*Product, err error) {
 		query = query.Where("name like ?", *name+"%")
 	}
 
-	return products, query.Select()
+	return products, query.Limit(20).Select()
 }
 
 func (s *Store) GetGoodsForBasket(basket *Basket) (goods []*Goods, err error) {
